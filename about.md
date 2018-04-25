@@ -5,7 +5,7 @@ titles:
   zh: About
   zh-Hans: 关于
   zh-Hant: 關於
-key: page-about
+key: about
 ---
 Welcome to my blog! my name is  **LuKaihao**, **LuRenyou** is my internet ID.I am an *embedded software engineer*.At the same time,web enginneers are my hobbies,and I love the Internet of things.A small programmer,I know that only **lifelong learning** can realize the value of life.
 
