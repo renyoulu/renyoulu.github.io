@@ -74,8 +74,8 @@ gitalk:
   clientSecret: 78a87d982dcddb0480ba86f45820c55627a3b03b #Github Application Client Secret
   repository: renyoulu.github.io #Github repo
   owner: renyoulu #Github repo owner
-  admin:  #Github repo owner and collaborators, only these guys can initialize github issues, IT IS A LIST.
-    - renyoulu
+  admin: renyoulu #Github repo owner and collaborators, only these guys can initialize github issues, IT IS A LIST.
+   
 
 ## Google Analytics ##
 # ga_tracking_id:  #Google analytics id for the site
