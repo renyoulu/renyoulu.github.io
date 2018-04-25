@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 我的第一篇博客
-key: page-about
+key: 20180425
 tags:
   - first blog
   - 第一篇博客
