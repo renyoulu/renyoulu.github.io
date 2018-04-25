@@ -18,9 +18,9 @@ text_color_theme: default #eg: default | dark | forest | ocean | chocolate | ora
 # url:  #the base hostname & protocol for your site e.g. https://www.someone.com
 
 baseurl: /
-title: Renyoulu's blog
+title: Renyou's blog
 description: > #this means to ignore newlines until "nav_lists:"
-  Renyoulu's Blog | 卢任有的博客
+  Renyou's Blog | 卢任有的博客
 
 nav_lists:
   - titles:
@@ -70,12 +70,12 @@ disqus:
 ## Comment system (gitalk) ##
 # please refer to https://github.com/gitalk/gitalk for more info.
 gitalk:
-  clientID: 143666b578a416f82175 #Github Application Client ID
-  clientSecret: 1d1c0604a1a4bff9b59ab7f56724dc0e8b837775 #Github Application Client Secret
-  repository: gitalk-demo #Github repo
-  owner: kitian616 #Github repo owner
+  clientID: fbc335fe205fbf265b37 #Github Application Client ID
+  clientSecret: 78a87d982dcddb0480ba86f45820c55627a3b03b #Github Application Client Secret
+  repository: renyoulu.github.io #Github repo
+  owner: renyoulu #Github repo owner
   admin:  #Github repo owner and collaborators, only these guys can initialize github issues, IT IS A LIST.
-    - kitian616
+    - renyoulu
 
 ## Google Analytics ##
 # ga_tracking_id:  #Google analytics id for the site
