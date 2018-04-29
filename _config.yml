@@ -92,7 +92,7 @@ leancloud:
 # chart: true
 
 ## Paginate ##
-paginate: 3
+paginate: 7
 paginate_path: /page:num
 
 ## Post excerpts ##
