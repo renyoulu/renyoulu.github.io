@@ -72,7 +72,7 @@ disqus:
 gitalk:
   clientID: fbc335fe205fbf265b37 #Github Application Client ID
   clientSecret: 78a87d982dcddb0480ba86f45820c55627a3b03b #Github Application Client Secret
-  repository: renyoulu.com #Github repo
+  repository: renyoulu.githu.io #Github repo
   owner: renyoulu #Github repo owner
   admin:  #Github repo owner and collaborators, only these guys can initialize github issues, IT IS A LIST.
     - renyoulu
