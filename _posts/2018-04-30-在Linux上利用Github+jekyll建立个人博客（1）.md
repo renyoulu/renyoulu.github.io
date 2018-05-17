@@ -167,5 +167,5 @@ git commit -m "first post"
 git remote add origin https://github.com/renyoulu/blog_demo.git
 git push origin gh-pages
 ```
-等待大概1-2分钟之后，再次刷新https://renyoulu.github.io，就能看到我们的blog了
-ps:上一步存在问题，第一次push可以成功，第二次网站无法解析，解决措施5.2号更新。
+等待大概1-2分钟之后，再次刷新https://renyoulu.github.io/blog_demo/，就能看到我们的blog。
+还有一种方式是建立一个名为username.github.io的仓库，本地新建username.github.io的博客，上传到master分支即可。
