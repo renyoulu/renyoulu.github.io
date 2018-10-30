@@ -1,5 +1,85 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh"><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="zh" /><updated>2018-05-17T23:58:31+08:00</updated><id>http://localhost:4000/</id><title type="html">Renyou’s blog</title><subtitle>Renyou's Blog | 卢任有的博客
-</subtitle><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><entry><title type="html">部分个人大学期间作品</title><link href="http://localhost:4000/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81.html" rel="alternate" type="text/html" title="部分个人大学期间作品" /><published>2018-05-17T00:00:00+08:00</published><updated>2018-05-17T00:00:00+08:00</updated><id>http://localhost:4000/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81</id><content type="html" xml:base="http://localhost:4000/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81.html">&lt;p&gt;大学期间从大二下半学期开始，在学校的实验室待着，筹备参加比赛和完成一些导师的项目，以下是部分有记录的作品（大牛请忽略…）&lt;!--more--&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh"><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="zh" /><updated>2018-10-30T15:32:20+08:00</updated><id>http://localhost:4000/</id><title type="html">Renyou’s blog</title><subtitle>Renyou's Blog | 卢任有的博客
+</subtitle><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><entry><title type="html">DSP烧写进flash的方法（F28335）</title><link href="http://localhost:4000/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html" rel="alternate" type="text/html" title="DSP烧写进flash的方法（F28335）" /><published>2018-10-30T00:00:00+08:00</published><updated>2018-10-30T00:00:00+08:00</updated><id>http://localhost:4000/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4</id><content type="html" xml:base="http://localhost:4000/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html">&lt;p&gt;&lt;img src=&quot;https://s1.ax2x.com/2018/10/30/5X6lXK.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在使用DSP的时候如何烧写程序是一个比较头疼的问题，像在STM32上面直接使用仿真器就可以进行烧写，不需要做什么额外的事情，但是在DSP里面，平时的程序经过仿真器只是将程序复制到了Sram里面，我们烧写程序需要对我们的工程做一些改变，才能顺利的烧写程序&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;大概的步骤如下&quot;&gt;大概的步骤如下&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;检查map文件&lt;/li&gt;
+  &lt;li&gt;修改F28335.CMD文件&lt;/li&gt;
+  &lt;li&gt;增加代码跳转文件&lt;/li&gt;
+  &lt;li&gt;生成可执行文件&lt;/li&gt;
+  &lt;li&gt;烧写可执行文件&lt;/li&gt;
+  &lt;li&gt;验证程序是否烧写到FLash中
+&lt;em&gt;（注：本文的使用的工程是DSP官方提供的框架和文件，DSP型号为C2000系列Tms320F28335）&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;1检查map文件&quot;&gt;1.检查map文件&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;name&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;origin&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;length&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;used&lt;/th&gt;
+      &lt;th&gt;unused&lt;/th&gt;
+      &lt;th&gt;attr&lt;/th&gt;
+      &lt;th&gt;fill&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CSM_PWL&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0033fff8&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;00000008&lt;/td&gt;
+      &lt;td&gt;00000000&lt;/td&gt;
+      &lt;td&gt;00000008&lt;/td&gt;
+      &lt;td&gt;RWIX&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;used&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;unused&lt;/code&gt;对应的值分别为00和08，如上，则标识密码区域尚未使用，否则密码区域可能已经被使用，不可以进行烧写，若强行烧写将导致DSP锁死，此时可以自己重新新建工程进行编译。&lt;/p&gt;
+
+&lt;p&gt;检查密码区域无误之后可以进行下一步操作。&lt;/p&gt;
+
+&lt;h2 id=&quot;2修改f28335cmd文件&quot;&gt;2．修改F28335.CMD文件&lt;/h2&gt;
+
+&lt;p&gt;项目创建之后，会自动生成一个&lt;code class=&quot;highlighter-rouge&quot;&gt;28335_RAM_lnk.cmd&lt;/code&gt;文件，该文件是我们进行仿真调试的时候，将程序放入RAM中运行的CMD文件，如果需要烧写到Flash中，则需要修改对应的地址，因此，可以更改cmd中对应的地址位置或者我们重新创建一个烧写Flash对应的cmd文件。&lt;/p&gt;
+
+&lt;p&gt;我们可以从其他项目例程中拷贝一个往Flash中烧写的cmd文件，同一芯片往flash中烧写的cmd文件都相同，因此直接拷贝一个过来(一般名称为&lt;code class=&quot;highlighter-rouge&quot;&gt;F28335.cmd&lt;/code&gt;),名称可以自己进行修改，或者自己创建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;xxx.cmd&lt;/code&gt;，&lt;strong&gt;也可在本文文末下载链接下载&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;创建完成cmd文件之后，在CCS6.0中（或之后的版本）右键点击之前的&lt;code class=&quot;highlighter-rouge&quot;&gt;28335_RAM_lnk.cmd&lt;/code&gt;文件，选择&lt;strong&gt;Exculde from Build&lt;/strong&gt;命令，则该文件不参与编译，检查烧写所用的cmd文件，如果没有参与编译，则取消勾选&lt;strong&gt;Exculde from Build&lt;/strong&gt;命令，使该文件参与编译。&lt;/p&gt;
+
+&lt;p&gt;两个cmd文件只能选择其中一个参与编译，否则编译器有可能无法识别具体的操作空间而出错。&lt;/p&gt;
+
+&lt;h2 id=&quot;3增加代码跳转文件&quot;&gt;3.增加代码跳转文件&lt;/h2&gt;
+
+&lt;p&gt;同时我们还需要在原有的调试程序项目中添加跳转代码文件&lt;code class=&quot;highlighter-rouge&quot;&gt;DSP2833x_CodeStartBranch.asm&lt;/code&gt;，在处理器完成引导后跳转到用户应用过程入口。&lt;/p&gt;
+
+&lt;p&gt;同一芯片对应的&lt;code class=&quot;highlighter-rouge&quot;&gt;DSP2833x_CodeStartBranch.asm&lt;/code&gt;文件也相同，因此我们可以从其他例程中拷贝或者自己添加该文件。&lt;strong&gt;本文文末有文件下载连接&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;4生成可执行文件&quot;&gt;4.生成可执行文件&lt;/h2&gt;
+
+&lt;p&gt;点击Build Project进行编译（&lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl+B&lt;/code&gt;），编译没有错误之后会在&lt;strong&gt;Debug&lt;/strong&gt;目录下生成&lt;code class=&quot;highlighter-rouge&quot;&gt;.out&lt;/code&gt;文件，该文件就是我们往Flash中烧写的文件。&lt;/p&gt;
+
+&lt;h2 id=&quot;5烧写可执行文件&quot;&gt;5.烧写可执行文件&lt;/h2&gt;
+
+&lt;p&gt;之后的过程与仿真时候Debug的过程相同。&lt;/p&gt;
+
+&lt;h2 id=&quot;6验证程序是否烧写到flash中&quot;&gt;6.验证程序是否烧写到FLash中&lt;/h2&gt;
+
+&lt;p&gt;程序烧写完成之后，给板子断电。通过拨码开关或者其他方式设置&lt;strong&gt;GPIO84/85/86/87&lt;/strong&gt;四个引脚为高电平，则为设置Boot Mod模式为Flash启动，然后重新上电，看程序是否执行。&lt;/p&gt;
+
+&lt;p&gt;断电上电如果程序自动运行，则表明往Flash中烧写成功。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;注意：在程序的下载过程中不要进行断电或者拔掉仿真器，否则有可能造成芯片锁死。&lt;/em&gt;
+&lt;em&gt;备注：程序需要的两个文件均已经增加在附件文件下【to-flash】中&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;【百度云下载地址】：&lt;a href=&quot;https://pan.baidu.com/s/1oRmP03ffbbz4iby8_7uaNQ&quot;&gt;to-flash&lt;/a&gt;
+【提取码】：u8e5&lt;/p&gt;</content><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><category term="blog" /><category term="DSP" /><category term="Flash" /><category term="嵌入式" /><summary type="html">在使用DSP的时候如何烧写程序是一个比较头疼的问题，像在STM32上面直接使用仿真器就可以进行烧写，不需要做什么额外的事情，但是在DSP里面，平时的程序经过仿真器只是将程序复制到了Sram里面，我们烧写程序需要对我们的工程做一些改变，才能顺利的烧写程序</summary></entry><entry><title type="html">部分个人大学期间作品</title><link href="http://localhost:4000/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81.html" rel="alternate" type="text/html" title="部分个人大学期间作品" /><published>2018-05-17T00:00:00+08:00</published><updated>2018-05-17T00:00:00+08:00</updated><id>http://localhost:4000/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81</id><content type="html" xml:base="http://localhost:4000/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81.html">&lt;p&gt;大学期间从大二下半学期开始，在学校的实验室待着，筹备参加比赛和完成一些导师的项目，以下是部分有记录的作品（大牛请忽略…）&lt;!--more--&gt;&lt;/p&gt;
 &lt;h2 id=&quot;智能车竞赛&quot;&gt;智能车竞赛&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/05/17/C6YZPP.jpg&quot; alt=&quot;&quot; /&gt;
 智能车侧视图&lt;/p&gt;
