@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="zh">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>部分个人大学期间作品 - Renyou's blog</title>
-<meta name="description" content="大学期间从大二下半学期开始，在学校的实验室待着，筹备参加比赛和完成一些导师的项目，以下是部分有记录的作品（大牛请忽略…）">
-<link rel="canonical" href="http://localhost:4000/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81.html"><link rel="alternate" type="application/rss+xml" title="Renyou's blog" href="http://localhost:4000/feed.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>DSP烧写进flash的方法（F28335） - Renyou's blog</title>
+<meta name="description" content="在使用DSP的时候如何烧写程序是一个比较头疼的问题，像在STM32上面直接使用仿真器就可以进行烧写，不需要做什么额外的事情，但是在DSP里面，平时的程序经过仿真器只是将程序复制到了Sram里面，我们烧写程序需要对我们的工程做一些改变，才能顺利的烧写程序">
+<link rel="canonical" href="http://localhost:4000/blog/2018/10/29/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html"><link rel="alternate" type="application/rss+xml" title="Renyou's blog" href="http://localhost:4000/feed.xml">
 <!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
 <!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
 <meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
@@ -296,62 +296,110 @@
 		<div class="col-1">
 			<article class="js-article" itemscope itemtype="http://schema.org/BlogPosting">
 				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
-				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">部分个人大学期间作品</h1><div class="m-article-info clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Renyoulu"/></meta><ul class="tag-wrapper"><li>
-          <a class="pill-button" href="/all.html?tag=%E4%BD%9C%E5%93%81%E5%B1%95%E7%A4%BA">作品展示</a>
-        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-05-17T00:00:00+08:00"
-          itemprop="datePublished">2018年 05月17日
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">DSP烧写进flash的方法（F28335）</h1><div class="m-article-info clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Renyoulu"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=DSP">DSP</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=Flash">Flash</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E5%B5%8C%E5%85%A5%E5%BC%8F">嵌入式</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-10-29T00:00:00+08:00"
+          itemprop="datePublished">2018年 10月29日
         </time></div>
   </div>
 </div>
 </header>
-				<div class="m-article-content js-article-content" itemprop="articleBody"><p>大学期间从大二下半学期开始，在学校的实验室待着，筹备参加比赛和完成一些导师的项目，以下是部分有记录的作品（大牛请忽略…）<!--more--></p>
-<h2 id="智能车竞赛">智能车竞赛</h2>
-<p><img src="https://s1.ax1x.com/2018/05/17/C6YZPP.jpg" alt="" />
-智能车侧视图</p>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><p><img src="https://s1.ax2x.com/2018/10/30/5X6lXK.png" alt="" /></p>
 
-<p><img src="https://s1.ax1x.com/2018/05/17/C6YMrQ.jpg" alt="" /></p>
+<p>在使用DSP的时候如何烧写程序是一个比较头疼的问题，像在STM32上面直接使用仿真器就可以进行烧写，不需要做什么额外的事情，但是在DSP里面，平时的程序经过仿真器只是将程序复制到了Sram里面，我们烧写程序需要对我们的工程做一些改变，才能顺利的烧写程序<!--more--></p>
 
-<p>智能车俯视图</p>
+<h3 id="大概的步骤如下">大概的步骤如下</h3>
+<ol>
+  <li>检查map文件</li>
+  <li>修改F28335.CMD文件</li>
+  <li>增加代码跳转文件</li>
+  <li>生成可执行文件</li>
+  <li>烧写可执行文件</li>
+  <li>验证程序是否烧写到FLash中
+<em>（注：本文的使用的工程是DSP官方提供的框架和文件，DSP型号为C2000系列Tms320F28335）</em></li>
+</ol>
 
-<p><img src="https://s1.ax1x.com/2018/05/17/C6YKKg.jpg" alt="" /></p>
+<h2 id="1检查map文件">1.检查map文件</h2>
 
-<p>智能车驱动板</p>
+<table>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th style="text-align: left">origin</th>
+      <th style="text-align: center">length</th>
+      <th style="text-align: right">used</th>
+      <th>unused</th>
+      <th>attr</th>
+      <th>fill</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CSM_PWL</td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center">0033fff8</td>
+      <td style="text-align: right">00000008</td>
+      <td>00000000</td>
+      <td>00000008</td>
+      <td>RWIX</td>
+    </tr>
+  </tbody>
+</table>
 
-<p><img src="https://s1.ax1x.com/2018/05/17/C6YnxS.jpg" alt="" /></p>
+<p>如果<code class="highlighter-rouge">used</code>和<code class="highlighter-rouge">unused</code>对应的值分别为00和08，如上，则标识密码区域尚未使用，否则密码区域可能已经被使用，不可以进行烧写，若强行烧写将导致DSP锁死，此时可以自己重新新建工程进行编译。</p>
 
-<p>智能车核心板</p>
-<h2 id="项目实验板">项目实验板</h2>
+<p>检查密码区域无误之后可以进行下一步操作。</p>
 
-<p><img src="https://s1.ax1x.com/2018/05/17/C6Ye8f.jpg" alt="" />
-左1  门禁实验板；左2 便捷式电压表 ；左3 OLED实验板 ；左4 DC-DC逆变器（自己看了都觉得贼垃圾）</p>
-<h2 id="电子设计竞赛">电子设计竞赛</h2>
+<h2 id="2修改f28335cmd文件">2．修改F28335.CMD文件</h2>
 
-<p><img src="https://s1.ax1x.com/2018/05/17/C6Ym28.jpg" alt="" />
-白光通信实验板和实验框架（金属部分是模拟一个房间，图片没有遮光布； 顶部有三个不同频率的白光光源；房间底部是一个太阳能电池板采集信号；实验板上主要是是三路处理过的带通滤波 ）</p>
-<h2 id="便捷式心率传感器">便捷式心率传感器</h2>
+<p>项目创建之后，会自动生成一个<code class="highlighter-rouge">28335_RAM_lnk.cmd</code>文件，该文件是我们进行仿真调试的时候，将程序放入RAM中运行的CMD文件，如果需要烧写到Flash中，则需要修改对应的地址，因此，可以更改cmd中对应的地址位置或者我们重新创建一个烧写Flash对应的cmd文件。</p>
 
-<p><img src="https://s1.ax1x.com/2018/05/17/C6Y3an.jpg" alt="" />
-自己做的一个心率传感器，可以实时检测心率</p>
+<p>我们可以从其他项目例程中拷贝一个往Flash中烧写的cmd文件，同一芯片往flash中烧写的cmd文件都相同，因此直接拷贝一个过来(一般名称为<code class="highlighter-rouge">F28335.cmd</code>),名称可以自己进行修改，或者自己创建一个<code class="highlighter-rouge">xxx.cmd</code>，<strong>也可在本文文末下载链接下载</strong>。</p>
 
-<p><img src="https://s1.ax1x.com/2018/05/17/C6Y85q.png" alt="" />
-需要将手指放在黑暗环境准确度高</p>
-<h2 id="无人快递车">无人快递车</h2>
+<p>创建完成cmd文件之后，在CCS6.0中（或之后的版本）右键点击之前的<code class="highlighter-rouge">28335_RAM_lnk.cmd</code>文件，选择<strong>Exculde from Build</strong>命令，则该文件不参与编译，检查烧写所用的cmd文件，如果没有参与编译，则取消勾选<strong>Exculde from Build</strong>命令，使该文件参与编译。</p>
 
-<p><img src="https://s1.ax1x.com/2018/05/17/C6Y1Vs.jpg" alt="" /></p>
+<p>两个cmd文件只能选择其中一个参与编译，否则编译器有可能无法识别具体的操作空间而出错。</p>
 
-<p>无人小车局部图，整体由两个平衡车改装，通过差速来转动车体，图为驱动部分。
-手机里记录的暂时就这些，后续整理。</p>
+<h2 id="3增加代码跳转文件">3.增加代码跳转文件</h2>
+
+<p>同时我们还需要在原有的调试程序项目中添加跳转代码文件<code class="highlighter-rouge">DSP2833x_CodeStartBranch.asm</code>，在处理器完成引导后跳转到用户应用过程入口。</p>
+
+<p>同一芯片对应的<code class="highlighter-rouge">DSP2833x_CodeStartBranch.asm</code>文件也相同，因此我们可以从其他例程中拷贝或者自己添加该文件。<strong>本文文末有文件下载连接</strong></p>
+
+<h2 id="4生成可执行文件">4.生成可执行文件</h2>
+
+<p>点击Build Project进行编译（<code class="highlighter-rouge">Ctrl+B</code>），编译没有错误之后会在<strong>Debug</strong>目录下生成<code class="highlighter-rouge">.out</code>文件，该文件就是我们往Flash中烧写的文件。</p>
+
+<h2 id="5烧写可执行文件">5.烧写可执行文件</h2>
+
+<p>之后的过程与仿真时候Debug的过程相同。</p>
+
+<h2 id="6验证程序是否烧写到flash中">6.验证程序是否烧写到FLash中</h2>
+
+<p>程序烧写完成之后，给板子断电。通过拨码开关或者其他方式设置<strong>GPIO84/85/86/87</strong>四个引脚为高电平，则为设置Boot Mod模式为Flash启动，然后重新上电，看程序是否执行。</p>
+
+<p>断电上电如果程序自动运行，则表明往Flash中烧写成功。</p>
+
+<p><em>注意：在程序的下载过程中不要进行断电或者拔掉仿真器，否则有可能造成芯片锁死。</em>
+<em>备注：程序需要的两个文件均已经增加在附件文件下【to-flash】中</em></p>
+
+<p>【百度云下载地址】：<a href="https://pan.baidu.com/s/1oRmP03ffbbz4iby8_7uaNQ">to-flash</a>
+【提取码】：u8e5</p>
 </div>
-				<footer><meta itemprop="dateModified" content="2018-05-17T00:00:00+08:00"><div class="article-license"><div class="m-license"><div class="clearfix"><a class="octocat" href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2018-05-17-部分个人大学期间作品.md">
+				<footer><meta itemprop="dateModified" content="2018-10-29T00:00:00+08:00"><div class="article-license"><div class="m-license"><div class="clearfix"><a class="octocat" href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2018-10-29-DSP_Flash烧写步骤.md">
         <img alt="View on Github" src="/assets/images/octocat.jpg" />
-      </a><p><a href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2018-05-17-部分个人大学期间作品.md">在 Github 上查阅此文。</a></p><p>本文遵守 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> 许可协议。</p><a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+      </a><p><a href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2018-10-29-DSP_Flash烧写步骤.md">在 Github 上查阅此文。</a></p><p>本文遵守 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> 许可协议。</p><a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
       <img alt="Creative Commons License" src="/assets/images/license-cc4.png" />
     </a><p>欢迎转载，转载需注明出处，且禁止用于商业目的。</p>
   </div>
 </div></div>
 				</footer>
 			</article>
-			<div class="article-previous-next clearfix"><div class="article-previous"><span>上篇</span><a href="/blog/2018/10/29/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html">DSP烧写进flash的方法（F28335）</a></div><div class="article-next"><span>下篇</span><a href="/blog/2018/04/30/%E5%9C%A8Linux%E4%B8%8A%E5%88%A9%E7%94%A8Github+jekyll%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2-1.html">在Linux上利用Github+jekyll建立个人博客（1）</a></div></div></div>
+			<div class="article-previous-next clearfix"><div class="article-previous"><span>上篇</span><a href="/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html">DSP将flash中的程序复制到sram运行</a></div><div class="article-next"><span>下篇</span><a href="/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81.html">部分个人大学期间作品</a></div></div></div>
 	</div>
 </div></div>
       </div>

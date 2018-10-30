@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="zh">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>DSP烧写进flash的方法（F28335） - Renyou's blog</title>
-<meta name="description" content="在使用DSP的时候如何烧写程序是一个比较头疼的问题，像在STM32上面直接使用仿真器就可以进行烧写，不需要做什么额外的事情，但是在DSP里面，平时的程序经过仿真器只是将程序复制到了Sram里面，我们烧写程序需要对我们的工程做一些改变，才能顺利的烧写程序">
-<link rel="canonical" href="http://localhost:4000/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html"><link rel="alternate" type="application/rss+xml" title="Renyou's blog" href="http://localhost:4000/feed.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>DSP将flash中的程序复制到sram运行 - Renyou's blog</title>
+<meta name="description" content="在我们实际的项目当中，有时候仅仅烧写在Flash中的速度跟我们方针的时候是完全不一样的，仿真的时候可以实现的功能可能一烧写进FLASH中就没有了效果，这就需要我们把FLASH中的程序复制到SRAM中运行。">
+<link rel="canonical" href="http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html"><link rel="alternate" type="application/rss+xml" title="Renyou's blog" href="http://localhost:4000/feed.xml">
 <!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
 <!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
 <meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
@@ -296,10 +296,12 @@
 		<div class="col-1">
 			<article class="js-article" itemscope itemtype="http://schema.org/BlogPosting">
 				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
-				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">DSP烧写进flash的方法（F28335）</h1><div class="m-article-info clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Renyoulu"/></meta><ul class="tag-wrapper"><li>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">DSP将flash中的程序复制到sram运行</h1><div class="m-article-info clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Renyoulu"/></meta><ul class="tag-wrapper"><li>
           <a class="pill-button" href="/all.html?tag=DSP">DSP</a>
         </li><li>
           <a class="pill-button" href="/all.html?tag=Flash">Flash</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=Sram">Sram</a>
         </li><li>
           <a class="pill-button" href="/all.html?tag=%E5%B5%8C%E5%85%A5%E5%BC%8F">嵌入式</a>
         </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2018-10-30T00:00:00+08:00"
@@ -308,98 +310,269 @@
   </div>
 </div>
 </header>
-				<div class="m-article-content js-article-content" itemprop="articleBody"><p><img src="https://s1.ax2x.com/2018/10/30/5X6lXK.png" alt="" /></p>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><p><img src="https://s1.ax1x.com/2018/10/30/i2LMWV.png" alt="" /></p>
 
-<p>在使用DSP的时候如何烧写程序是一个比较头疼的问题，像在STM32上面直接使用仿真器就可以进行烧写，不需要做什么额外的事情，但是在DSP里面，平时的程序经过仿真器只是将程序复制到了Sram里面，我们烧写程序需要对我们的工程做一些改变，才能顺利的烧写程序<!--more--></p>
+<p>在我们实际的项目当中，有时候仅仅烧写在Flash中的速度跟我们方针的时候是完全不一样的，仿真的时候可以实现的功能可能一烧写进FLASH中就没有了效果，这就需要我们把FLASH中的程序复制到SRAM中运行。<!--more-->在flash中和SRAM之所以不一样，是因为FLSAH的速度实在是有限，一旦遇到一些高速信号，例如高频的PWM波就没辙了，只有把程序复制到SRAM中才能和仿真的时候一样。如果如何烧写不清楚，可以参考上一篇博客<img src="https://renyoulu.com/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html" alt="DSP烧写进FLASH" /></p>
 
-<h3 id="大概的步骤如下">大概的步骤如下</h3>
-<ol>
-  <li>检查map文件</li>
-  <li>修改F28335.CMD文件</li>
-  <li>增加代码跳转文件</li>
-  <li>生成可执行文件</li>
-  <li>烧写可执行文件</li>
-  <li>验证程序是否烧写到FLash中
-<em>（注：本文的使用的工程是DSP官方提供的框架和文件，DSP型号为C2000系列Tms320F28335）</em></li>
-</ol>
+<p>废话不多说直接上手做。
+<em>注：本文中最后修改好的文件在文末下载链接当中</em></p>
 
-<h2 id="1检查map文件">1.检查map文件</h2>
+<h2 id="1添加dsp28xxx_sectioncopy_nonbiosasm到工程目录下">1.添加DSP28xxx_SectionCopy_nonBIOS.asm到工程目录下</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>name</th>
-      <th style="text-align: left">origin</th>
-      <th style="text-align: center">length</th>
-      <th style="text-align: right">used</th>
-      <th>unused</th>
-      <th>attr</th>
-      <th>fill</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>CSM_PWL</td>
-      <td style="text-align: left"> </td>
-      <td style="text-align: center">0033fff8</td>
-      <td style="text-align: right">00000008</td>
-      <td>00000000</td>
-      <td>00000008</td>
-      <td>RWIX</td>
-    </tr>
-  </tbody>
-</table>
+<p><code class="highlighter-rouge">DSP28xxx_SectionCopy_nonBIOS.asm</code>中为程序拷贝函数。定义了段名为<strong>copysections</strong>，之后将会在<strong>CMD</strong>文件添加该段。</p>
 
-<p>如果<code class="highlighter-rouge">used</code>和<code class="highlighter-rouge">unused</code>对应的值分别为00和08，如上，则标识密码区域尚未使用，否则密码区域可能已经被使用，不可以进行烧写，若强行烧写将导致DSP锁死，此时可以自己重新新建工程进行编译。</p>
+<h2 id="2修改启动文件dsp2833x_codestartbranchasm">2.修改启动文件DSP2833x_CodeStartBranch.asm</h2>
 
-<p>检查密码区域无误之后可以进行下一步操作。</p>
+<p>有些时候程序的执行对于速度要求很高，此时就需要将程序整体拷贝到<strong>RAM</strong>中去执行。程序整体拷贝同样需要进行特殊修改和设置。要想详细了解下面设置的原理，可以查找相关资料来详细了解程序启动的过程。</p>
+<h3 id="1程序启动的过程一般为">1.程序启动的过程一般为：</h3>
 
-<h2 id="2修改f28335cmd文件">2．修改F28335.CMD文件</h2>
+<pre><code class="language-mermaid">graph TD;
+    code_start--&gt;wd_disable;
+    wd_disable--&gt;c_int00-;
+    c_int00---&gt;mian（）;
+</code></pre>
 
-<p>项目创建之后，会自动生成一个<code class="highlighter-rouge">28335_RAM_lnk.cmd</code>文件，该文件是我们进行仿真调试的时候，将程序放入RAM中运行的CMD文件，如果需要烧写到Flash中，则需要修改对应的地址，因此，可以更改cmd中对应的地址位置或者我们重新创建一个烧写Flash对应的cmd文件。</p>
+<p>为了完成程序的拷贝，需要在C语言初始化之前插入一个程序拷贝的环节，修改之后的流程为：</p>
 
-<p>我们可以从其他项目例程中拷贝一个往Flash中烧写的cmd文件，同一芯片往flash中烧写的cmd文件都相同，因此直接拷贝一个过来(一般名称为<code class="highlighter-rouge">F28335.cmd</code>),名称可以自己进行修改，或者自己创建一个<code class="highlighter-rouge">xxx.cmd</code>，<strong>也可在本文文末下载链接下载</strong>。</p>
+<pre><code class="language-mermaid">graph TD;
+    code_start--&gt;wd_disable;
+    wd_disable--&gt;copy_sections;
+    copy_sections---&gt;c_int00-;
+    c_int00---&gt;mian（）;
+</code></pre>
 
-<p>创建完成cmd文件之后，在CCS6.0中（或之后的版本）右键点击之前的<code class="highlighter-rouge">28335_RAM_lnk.cmd</code>文件，选择<strong>Exculde from Build</strong>命令，则该文件不参与编译，检查烧写所用的cmd文件，如果没有参与编译，则取消勾选<strong>Exculde from Build</strong>命令，使该文件参与编译。</p>
+<p>为此在<code class="highlighter-rouge">DSP2833x_CodeStartBranch.asm</code>中将所有的<code class="highlighter-rouge">c_int00</code>替换为<code class="highlighter-rouge">copy_sections</code>。如下<strong>2.1</strong>步骤</p>
 
-<p>两个cmd文件只能选择其中一个参与编译，否则编译器有可能无法识别具体的操作空间而出错。</p>
+<p>程序运行后从<strong>FLASH</strong>启动，会调用<strong>code_start</strong>关闭看门狗后通过调用<strong>c_int00</strong>，通过<strong>c_int00</strong>调用<strong>main（）</strong>函数，所以程序从<strong>FLASH</strong>拷贝到<strong>RAM</strong>需要在<strong>c_int00</strong>之前完成。所以将做以下修改：</p>
 
-<h2 id="3增加代码跳转文件">3.增加代码跳转文件</h2>
+<h3 id="21-将程序中的_c_int00修改为-copy_sections">2.1 将程序中的_c_int00修改为 copy_sections</h3>
+<h3 id="22-将text-修改为sect-wddisable">2.2 将.text 修改为.sect “wddisable”</h3>
 
-<p>同时我们还需要在原有的调试程序项目中添加跳转代码文件<code class="highlighter-rouge">DSP2833x_CodeStartBranch.asm</code>，在处理器完成引导后跳转到用户应用过程入口。</p>
+<p><strong>修改解释：</strong></p>
 
-<p>同一芯片对应的<code class="highlighter-rouge">DSP2833x_CodeStartBranch.asm</code>文件也相同，因此我们可以从其他例程中拷贝或者自己添加该文件。<strong>本文文末有文件下载连接</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WD_DISABLE .set 1 <span class="p">;</span><span class="nb">set </span>to 1 to disable WD, <span class="k">else </span><span class="nb">set </span>to 0
 
-<h2 id="4生成可执行文件">4.生成可执行文件</h2>
+.ref _c_int00   <span class="c">#（这里不需要使用_c_int00二是需要调用copy_sections函数，故改为.ref copy_sections）</span>
 
-<p>点击Build Project进行编译（<code class="highlighter-rouge">Ctrl+B</code>），编译没有错误之后会在<strong>Debug</strong>目录下生成<code class="highlighter-rouge">.out</code>文件，该文件就是我们往Flash中烧写的文件。</p>
+    .global code_start
 
-<h2 id="5烧写可执行文件">5.烧写可执行文件</h2>
+    .sect <span class="s2">"codestart"</span>
 
-<p>之后的过程与仿真时候Debug的过程相同。</p>
+code_start:
 
-<h2 id="6验证程序是否烧写到flash中">6.验证程序是否烧写到FLash中</h2>
+    .if WD_DISABLE <span class="o">==</span> 1
 
-<p>程序烧写完成之后，给板子断电。通过拨码开关或者其他方式设置<strong>GPIO84/85/86/87</strong>四个引脚为高电平，则为设置Boot Mod模式为Flash启动，然后重新上电，看程序是否执行。</p>
+        LB wd_disable       
 
-<p>断电上电如果程序自动运行，则表明往Flash中烧写成功。</p>
+    .else
 
-<p><em>注意：在程序的下载过程中不要进行断电或者拔掉仿真器，否则有可能造成芯片锁死。</em>
-<em>备注：程序需要的两个文件均已经增加在附件文件下【to-flash】中</em></p>
+        LB _c_int00 <span class="c">#(这里应该跳转到copy_sections，故应改为LB copy_sections)</span>
 
-<p>【百度云下载地址】：<a href="https://pan.baidu.com/s/1oRmP03ffbbz4iby8_7uaNQ">to-flash</a>
-【提取码】：u8e5</p>
+.endif
+
+    .if WD_DISABLE <span class="o">==</span> 1
+
+    .text <span class="c">#（.text段将会加载到RAM中运行，这里看门狗程序是需要在拷贝前，也就是FLASH中运行，所以从新定义一个wddisable段，之后将会添加到.CMD文件，所以修改为.sect "wddisable" 之所以这么定义，是因为.text段是需要拷贝到RAM执行的，而在程序拷贝之前首先需要关闭看门狗，从而避免出现错误。如果仍然将程序放在.text段中，则看门狗禁止程序无法执行，会出现错误，因此在FLASH中定义一个新的段，从而让看门狗关闭的程序在FLASH中提前执行）</span>
+
+wd_disable:
+
+    SETC OBJMODE        <span class="p">;</span>Set OBJMODE <span class="k">for </span>28x object code
+
+    EALLOW              <span class="p">;</span>Enable EALLOW protected register access
+
+    MOVZ DP, <span class="c">#7029h&gt;&gt;6  ;Set data page for WDCR register</span>
+
+    MOV @7029h, <span class="c">#0068h  ;Set WDDIS bit in WDCR to disable WD</span>
+
+    EDIS                <span class="p">;</span>Disable EALLOW protected register access
+
+    LB _c_int00  <span class="c">#（这里关闭看门狗后需要调用拷贝函数在跳转到_C_INT00所以改为LB copy_sections）       </span>
+
+    .endif
+
+.end
+
+</code></pre></div></div>
+
+<h2 id="3修改dsp2833x_sysctrlc文件">3.修改DSP2833x_SysCtrl.c文件</h2>
+<p><strong>注释掉一些程序</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c">#pragma CODE_SECTION(InitFlash, "ramfuncs");</span>
+
+</code></pre></div></div>
+
+<p>程序定义了<strong>ramfuncs</strong>段，当在<strong>FLASH</strong>中运行时，由于速度问题，部分函数必须在<strong>RAM</strong>中运行，这段程序的作用就是声明<strong>IinitFlash</strong> 函数属于<strong>ramfunc</strong>段，需在<strong>RAM</strong>中运行，我们把所有程序加载到<strong>RAM</strong>中运行，故不再需要，注释掉后默认在<code class="highlighter-rouge">.text</code>段</p>
+
+<h2 id="4-修改dsp2833x_usdelayasm文件">4. 修改DSP2833x_usDelay.asm文件</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.def _DSP28x_usDelay
+
+.sect <span class="s2">"ramfuncs"</span>
+
+<span class="sb">```</span>bash
+
+改为
+
+<span class="sb">```</span>bash
+.def _DSP28x_usDelay
+
+.text
+
+</code></pre></div></div>
+
+<p>原理同上</p>
+
+<h2 id="5-cmd文件修改">5. CMD文件修改</h2>
+
+<h3 id="51-删除相关代码">5.1 ：删除相关代码</h3>
+<p>删除类似以下ramfuncs</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ramfuncs            : LOAD <span class="o">=</span> FLASHD, 
+                    RUN <span class="o">=</span> RAML0, 
+                    LOAD_START<span class="o">(</span>_RamfuncsLoadStart<span class="o">)</span>,
+                    LOAD_END<span class="o">(</span>_RamfuncsLoadEnd<span class="o">)</span>,
+                    RUN_START<span class="o">(</span>_RamfuncsRunStart<span class="o">)</span>,
+                    PAGE <span class="o">=</span> 0
+</code></pre></div></div>
+
+<p><strong>Ramfuncs</strong>段是之前在<strong>FLASH</strong>中运行时需要把部分程序搬移到<strong>RAM</strong>中定义的段，  <code class="highlighter-rouge">_DSP28x_usDelay</code>函数就定义在该段，现在要把所有程序都搬到<strong>RAM</strong>中，故不再需要。</p>
+
+<h3 id="52添加代码">5.2：添加代码</h3>
+<p>（通常添加在codestart  : &gt; BEGIN,  PAGE = 0）之后</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wddisable    : <span class="o">&gt;</span> FLASHA,    PAGE <span class="o">=</span> 0
+copysections        : <span class="o">&gt;</span> FLASHA,    PAGE <span class="o">=</span> 0
+
+</code></pre></div></div>
+<p><strong>Wddisable</strong>与<strong>copysections</strong>是新添加的段，<strong>Wddisable</strong>是之前将<code class="highlighter-rouge">DSP2833x_CodeStartBranch.asm</code>中关闭看门狗的代码放在了<strong>Wddisable</strong>段，该段需在<strong>FLASH</strong>中运行。<strong>Copysections</strong>是拷贝函数所在的断，需在<strong>Flash</strong>中完成拷贝。</p>
+
+<h3 id="53修改stack-栈-ebss全局数据静态数据-esysmem堆">5.3：修改.stack 栈 .ebss全局数据、静态数据 .esysmem堆</h3>
+<p>可以修改他们的存储大小与位置，但必须在低64K地址中即（M0，M1，L4-L7）(L1 -L3受保护的，放代码段的）。例如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.stack              : <span class="o">&gt;</span> RAMM1       PAGE <span class="o">=</span> 1
+.ebss               : <span class="o">&gt;</span> RAML4       PAGE <span class="o">=</span> 1
+.esysmem            : <span class="o">&gt;</span> RAML4       PAGE <span class="o">=</span> 1
+
+</code></pre></div></div>
+<h3 id="5-4修改代码存储位置与运行位置">5. 4：修改代码存储位置与运行位置</h3>
+
+<p>将<code class="highlighter-rouge">.cinit              : &gt; FLASHA      PAGE = 0</code>改为</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+.cinit : LOAD <span class="o">=</span> FLASHA, PAGE <span class="o">=</span> 0       
+
+                 RUN <span class="o">=</span> RAML0,       PAGE <span class="o">=</span> 0   
+
+                 LOAD_START<span class="o">(</span>_cinit_loadstart<span class="o">)</span>,
+
+                 RUN_START<span class="o">(</span>_cinit_runstart<span class="o">)</span>,
+
+                  SIZE<span class="o">(</span>_cinit_size<span class="o">)</span>
+
+</code></pre></div></div>
+<p>将程序中变量初值和常量加载到<strong>FLASH</strong>运行在<strong>RAM</strong>中</p>
+
+<p>将<code class="highlighter-rouge">.econst             : &gt; FLASHA      PAGE = 0</code>改为</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+.econst :   LOAD <span class="o">=</span> FLASHA,   PAGE <span class="o">=</span> 0       
+
+                 RUN <span class="o">=</span> RAML0,       PAGE <span class="o">=</span> 0        
+
+                 LOAD_START<span class="o">(</span>_econst_loadstart<span class="o">)</span>,
+
+                RUN_START<span class="o">(</span>_econst_runstart<span class="o">)</span>,
+
+                 SIZE<span class="o">(</span>_econst_size<span class="o">)</span>
+
+</code></pre></div></div>
+
+<p>将<code class="highlighter-rouge">.pinit              : &gt; FLASHA,     PAGE = 0 </code>改为</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+.pinit :   LOAD <span class="o">=</span> FLASHA,   PAGE <span class="o">=</span> 0         
+
+                 RUN <span class="o">=</span> RAML0, PAGE <span class="o">=</span> 0        
+
+                 LOAD_START<span class="o">(</span>_pinit_loadstart<span class="o">)</span>,
+
+                 RUN_START<span class="o">(</span>_pinit_runstart<span class="o">)</span>,
+
+                 SIZE<span class="o">(</span>_pinit_size<span class="o">)</span>
+
+</code></pre></div></div>
+<p>将<code class="highlighter-rouge">.switch             : &gt; FLASHA      PAGE = 0  </code>修改为</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.switch :   LOAD <span class="o">=</span> FLASHA,   PAGE <span class="o">=</span> 0        
+
+                 RUN <span class="o">=</span> RAML0,       PAGE <span class="o">=</span> 0       
+
+                 LOAD_START<span class="o">(</span>_switch_loadstart<span class="o">)</span>,
+
+                 RUN_START<span class="o">(</span>_switch_runstart<span class="o">)</span>,
+
+                 SIZE<span class="o">(</span>_switch_size<span class="o">)</span>   
+
+</code></pre></div></div>
+<p>增加<code class="highlighter-rouge">.const</code>段的定义，或者将拷贝函数中<code class="highlighter-rouge">.const</code>的拷贝注释掉</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.const :   LOAD <span class="o">=</span> FLASHA,   PAGE <span class="o">=</span> 0        
+
+                 RUN <span class="o">=</span> RAML0, PAGE <span class="o">=</span> 0        
+
+                 LOAD_START<span class="o">(</span>_const_loadstart<span class="o">)</span>,
+
+                 RUN_START<span class="o">(</span>_const_runstart<span class="o">)</span>,
+
+                 SIZE<span class="o">(</span>_const_size<span class="o">)</span>
+</code></pre></div></div>
+
+<h3 id="5-5修改text段">5. 5修改.text段</h3>
+
+<p>为了保证足够代码空间，修改MEMORY PAGE 0中</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RAML1       : origin <span class="o">=</span> 0x009000, length <span class="o">=</span> 0x001000        
+
+ RAML2       : origin <span class="o">=</span> 0x00A000, length <span class="o">=</span> 0x001000     
+
+ RAML3       : origin <span class="o">=</span> 0x00B000, length <span class="o">=</span> 0x001000  
+</code></pre></div></div>
+<p>改为</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  RAM_L1L2L3       : origin <span class="o">=</span> 0x009000, length <span class="o">=</span> 0x003000  
+</code></pre></div></div>
+<p>然后将SECTIONS中</p>
+
+<p><code class="highlighter-rouge">.text               : &gt; FLASHA      PAGE = 0</code>改为</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.text :   LOAD <span class="o">=</span> FLASHA,  PAGE <span class="o">=</span> 0        
+
+                 RUN <span class="o">=</span> RAM_L1L2L3, PAGE <span class="o">=</span> 0        
+
+                 LOAD_START<span class="o">(</span>_text_loadstart<span class="o">)</span>,
+
+                 RUN_START<span class="o">(</span>_text_runstart<span class="o">)</span>,
+
+                 SIZE<span class="o">(</span>_text_size<span class="o">)</span>
+</code></pre></div></div>
+<h2 id="6rebuild--project-和烧写">6.rebuild  project 和烧写</h2>
+<p>方法和debug一样</p>
+
+<p><em>备注：本文一共需要需要的文件均已经修改和添加在附件文件下【flash-sram】中</em>
+【百度云下载链接】：<a href="https://pan.baidu.com/s/10LwtP3d7IoOeleQKL-Z0pw">【flash-sram</a>
+【提取码】： 3xi2</p>
+
 </div>
-				<footer><meta itemprop="dateModified" content="2018-10-30T00:00:00+08:00"><div class="article-license"><div class="m-license"><div class="clearfix"><a class="octocat" href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2018-10-30-DSP_Flash烧写步骤.md">
+				<footer><meta itemprop="dateModified" content="2018-10-30T00:00:00+08:00"><div class="article-license"><div class="m-license"><div class="clearfix"><a class="octocat" href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2018-10-30-DSP_FLASH_COPY_TO_FLASH.md">
         <img alt="View on Github" src="/assets/images/octocat.jpg" />
-      </a><p><a href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2018-10-30-DSP_Flash烧写步骤.md">在 Github 上查阅此文。</a></p><p>本文遵守 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> 许可协议。</p><a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+      </a><p><a href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2018-10-30-DSP_FLASH_COPY_TO_FLASH.md">在 Github 上查阅此文。</a></p><p>本文遵守 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> 许可协议。</p><a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
       <img alt="Creative Commons License" src="/assets/images/license-cc4.png" />
     </a><p>欢迎转载，转载需注明出处，且禁止用于商业目的。</p>
   </div>
 </div></div>
 				</footer>
 			</article>
-			<div class="article-previous-next clearfix"><div class="article-next"><span>下篇</span><a href="/blog/2018/05/17/%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81.html">部分个人大学期间作品</a></div></div></div>
+			<div class="article-previous-next clearfix"><div class="article-next"><span>下篇</span><a href="/blog/2018/10/29/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html">DSP烧写进flash的方法（F28335）</a></div></div></div>
 	</div>
 </div></div>
       </div>

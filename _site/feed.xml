@@ -1,5 +1,255 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh"><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="zh" /><updated>2018-10-30T15:32:20+08:00</updated><id>http://localhost:4000/</id><title type="html">Renyou’s blog</title><subtitle>Renyou's Blog | 卢任有的博客
-</subtitle><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><entry><title type="html">DSP烧写进flash的方法（F28335）</title><link href="http://localhost:4000/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html" rel="alternate" type="text/html" title="DSP烧写进flash的方法（F28335）" /><published>2018-10-30T00:00:00+08:00</published><updated>2018-10-30T00:00:00+08:00</updated><id>http://localhost:4000/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4</id><content type="html" xml:base="http://localhost:4000/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html">&lt;p&gt;&lt;img src=&quot;https://s1.ax2x.com/2018/10/30/5X6lXK.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh"><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="zh" /><updated>2018-10-30T17:36:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Renyou’s blog</title><subtitle>Renyou's Blog | 卢任有的博客
+</subtitle><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><entry><title type="html">DSP将flash中的程序复制到sram运行</title><link href="http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html" rel="alternate" type="text/html" title="DSP将flash中的程序复制到sram运行" /><published>2018-10-30T00:00:00+08:00</published><updated>2018-10-30T00:00:00+08:00</updated><id>http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH</id><content type="html" xml:base="http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html">&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/10/30/i2LMWV.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在我们实际的项目当中，有时候仅仅烧写在Flash中的速度跟我们方针的时候是完全不一样的，仿真的时候可以实现的功能可能一烧写进FLASH中就没有了效果，这就需要我们把FLASH中的程序复制到SRAM中运行。&lt;!--more--&gt;在flash中和SRAM之所以不一样，是因为FLSAH的速度实在是有限，一旦遇到一些高速信号，例如高频的PWM波就没辙了，只有把程序复制到SRAM中才能和仿真的时候一样。如果如何烧写不清楚，可以参考上一篇博客&lt;img src=&quot;https://renyoulu.com/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html&quot; alt=&quot;DSP烧写进FLASH&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;废话不多说直接上手做。
+&lt;em&gt;注：本文中最后修改好的文件在文末下载链接当中&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;1添加dsp28xxx_sectioncopy_nonbiosasm到工程目录下&quot;&gt;1.添加DSP28xxx_SectionCopy_nonBIOS.asm到工程目录下&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;DSP28xxx_SectionCopy_nonBIOS.asm&lt;/code&gt;中为程序拷贝函数。定义了段名为&lt;strong&gt;copysections&lt;/strong&gt;，之后将会在&lt;strong&gt;CMD&lt;/strong&gt;文件添加该段。&lt;/p&gt;
+
+&lt;h2 id=&quot;2修改启动文件dsp2833x_codestartbranchasm&quot;&gt;2.修改启动文件DSP2833x_CodeStartBranch.asm&lt;/h2&gt;
+
+&lt;p&gt;有些时候程序的执行对于速度要求很高，此时就需要将程序整体拷贝到&lt;strong&gt;RAM&lt;/strong&gt;中去执行。程序整体拷贝同样需要进行特殊修改和设置。要想详细了解下面设置的原理，可以查找相关资料来详细了解程序启动的过程。&lt;/p&gt;
+&lt;h3 id=&quot;1程序启动的过程一般为&quot;&gt;1.程序启动的过程一般为：&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-mermaid&quot;&gt;graph TD;
+    code_start--&amp;gt;wd_disable;
+    wd_disable--&amp;gt;c_int00-;
+    c_int00---&amp;gt;mian（）;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为了完成程序的拷贝，需要在C语言初始化之前插入一个程序拷贝的环节，修改之后的流程为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-mermaid&quot;&gt;graph TD;
+    code_start--&amp;gt;wd_disable;
+    wd_disable--&amp;gt;copy_sections;
+    copy_sections---&amp;gt;c_int00-;
+    c_int00---&amp;gt;mian（）;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为此在&lt;code class=&quot;highlighter-rouge&quot;&gt;DSP2833x_CodeStartBranch.asm&lt;/code&gt;中将所有的&lt;code class=&quot;highlighter-rouge&quot;&gt;c_int00&lt;/code&gt;替换为&lt;code class=&quot;highlighter-rouge&quot;&gt;copy_sections&lt;/code&gt;。如下&lt;strong&gt;2.1&lt;/strong&gt;步骤&lt;/p&gt;
+
+&lt;p&gt;程序运行后从&lt;strong&gt;FLASH&lt;/strong&gt;启动，会调用&lt;strong&gt;code_start&lt;/strong&gt;关闭看门狗后通过调用&lt;strong&gt;c_int00&lt;/strong&gt;，通过&lt;strong&gt;c_int00&lt;/strong&gt;调用&lt;strong&gt;main（）&lt;/strong&gt;函数，所以程序从&lt;strong&gt;FLASH&lt;/strong&gt;拷贝到&lt;strong&gt;RAM&lt;/strong&gt;需要在&lt;strong&gt;c_int00&lt;/strong&gt;之前完成。所以将做以下修改：&lt;/p&gt;
+
+&lt;h3 id=&quot;21-将程序中的_c_int00修改为-copy_sections&quot;&gt;2.1 将程序中的_c_int00修改为 copy_sections&lt;/h3&gt;
+&lt;h3 id=&quot;22-将text-修改为sect-wddisable&quot;&gt;2.2 将.text 修改为.sect “wddisable”&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;修改解释：&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;WD_DISABLE .set 1 &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;to 1 to disable WD, &lt;span class=&quot;k&quot;&gt;else &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;to 0
+
+.ref _c_int00   &lt;span class=&quot;c&quot;&gt;#（这里不需要使用_c_int00二是需要调用copy_sections函数，故改为.ref copy_sections）&lt;/span&gt;
+
+    .global code_start
+
+    .sect &lt;span class=&quot;s2&quot;&gt;&quot;codestart&quot;&lt;/span&gt;
+
+code_start:
+
+    .if WD_DISABLE &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; 1
+
+        LB wd_disable       
+
+    .else
+
+        LB _c_int00 &lt;span class=&quot;c&quot;&gt;#(这里应该跳转到copy_sections，故应改为LB copy_sections)&lt;/span&gt;
+
+.endif
+
+    .if WD_DISABLE &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; 1
+
+    .text &lt;span class=&quot;c&quot;&gt;#（.text段将会加载到RAM中运行，这里看门狗程序是需要在拷贝前，也就是FLASH中运行，所以从新定义一个wddisable段，之后将会添加到.CMD文件，所以修改为.sect &quot;wddisable&quot; 之所以这么定义，是因为.text段是需要拷贝到RAM执行的，而在程序拷贝之前首先需要关闭看门狗，从而避免出现错误。如果仍然将程序放在.text段中，则看门狗禁止程序无法执行，会出现错误，因此在FLASH中定义一个新的段，从而让看门狗关闭的程序在FLASH中提前执行）&lt;/span&gt;
+
+wd_disable:
+
+    SETC OBJMODE        &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Set OBJMODE &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;28x object code
+
+    EALLOW              &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Enable EALLOW protected register access
+
+    MOVZ DP, &lt;span class=&quot;c&quot;&gt;#7029h&amp;gt;&amp;gt;6  ;Set data page for WDCR register&lt;/span&gt;
+
+    MOV @7029h, &lt;span class=&quot;c&quot;&gt;#0068h  ;Set WDDIS bit in WDCR to disable WD&lt;/span&gt;
+
+    EDIS                &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Disable EALLOW protected register access
+
+    LB _c_int00  &lt;span class=&quot;c&quot;&gt;#（这里关闭看门狗后需要调用拷贝函数在跳转到_C_INT00所以改为LB copy_sections）       &lt;/span&gt;
+
+    .endif
+
+.end
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;3修改dsp2833x_sysctrlc文件&quot;&gt;3.修改DSP2833x_SysCtrl.c文件&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;注释掉一些程序&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;c&quot;&gt;#pragma CODE_SECTION(InitFlash, &quot;ramfuncs&quot;);&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;程序定义了&lt;strong&gt;ramfuncs&lt;/strong&gt;段，当在&lt;strong&gt;FLASH&lt;/strong&gt;中运行时，由于速度问题，部分函数必须在&lt;strong&gt;RAM&lt;/strong&gt;中运行，这段程序的作用就是声明&lt;strong&gt;IinitFlash&lt;/strong&gt; 函数属于&lt;strong&gt;ramfunc&lt;/strong&gt;段，需在&lt;strong&gt;RAM&lt;/strong&gt;中运行，我们把所有程序加载到&lt;strong&gt;RAM&lt;/strong&gt;中运行，故不再需要，注释掉后默认在&lt;code class=&quot;highlighter-rouge&quot;&gt;.text&lt;/code&gt;段&lt;/p&gt;
+
+&lt;h2 id=&quot;4-修改dsp2833x_usdelayasm文件&quot;&gt;4. 修改DSP2833x_usDelay.asm文件&lt;/h2&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.def _DSP28x_usDelay
+
+.sect &lt;span class=&quot;s2&quot;&gt;&quot;ramfuncs&quot;&lt;/span&gt;
+
+&lt;span class=&quot;sb&quot;&gt;```&lt;/span&gt;bash
+
+改为
+
+&lt;span class=&quot;sb&quot;&gt;```&lt;/span&gt;bash
+.def _DSP28x_usDelay
+
+.text
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;原理同上&lt;/p&gt;
+
+&lt;h2 id=&quot;5-cmd文件修改&quot;&gt;5. CMD文件修改&lt;/h2&gt;
+
+&lt;h3 id=&quot;51-删除相关代码&quot;&gt;5.1 ：删除相关代码&lt;/h3&gt;
+&lt;p&gt;删除类似以下ramfuncs&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ramfuncs            : LOAD &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FLASHD, 
+                    RUN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; RAML0, 
+                    LOAD_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_RamfuncsLoadStart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+                    LOAD_END&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_RamfuncsLoadEnd&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+                    RUN_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_RamfuncsRunStart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+                    PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Ramfuncs&lt;/strong&gt;段是之前在&lt;strong&gt;FLASH&lt;/strong&gt;中运行时需要把部分程序搬移到&lt;strong&gt;RAM&lt;/strong&gt;中定义的段，  &lt;code class=&quot;highlighter-rouge&quot;&gt;_DSP28x_usDelay&lt;/code&gt;函数就定义在该段，现在要把所有程序都搬到&lt;strong&gt;RAM&lt;/strong&gt;中，故不再需要。&lt;/p&gt;
+
+&lt;h3 id=&quot;52添加代码&quot;&gt;5.2：添加代码&lt;/h3&gt;
+&lt;p&gt;（通常添加在codestart  : &amp;gt; BEGIN,  PAGE = 0）之后&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wddisable    : &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; FLASHA,    PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+copysections        : &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; FLASHA,    PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Wddisable&lt;/strong&gt;与&lt;strong&gt;copysections&lt;/strong&gt;是新添加的段，&lt;strong&gt;Wddisable&lt;/strong&gt;是之前将&lt;code class=&quot;highlighter-rouge&quot;&gt;DSP2833x_CodeStartBranch.asm&lt;/code&gt;中关闭看门狗的代码放在了&lt;strong&gt;Wddisable&lt;/strong&gt;段，该段需在&lt;strong&gt;FLASH&lt;/strong&gt;中运行。&lt;strong&gt;Copysections&lt;/strong&gt;是拷贝函数所在的断，需在&lt;strong&gt;Flash&lt;/strong&gt;中完成拷贝。&lt;/p&gt;
+
+&lt;h3 id=&quot;53修改stack-栈-ebss全局数据静态数据-esysmem堆&quot;&gt;5.3：修改.stack 栈 .ebss全局数据、静态数据 .esysmem堆&lt;/h3&gt;
+&lt;p&gt;可以修改他们的存储大小与位置，但必须在低64K地址中即（M0，M1，L4-L7）(L1 -L3受保护的，放代码段的）。例如：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.stack              : &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; RAMM1       PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+.ebss               : &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; RAML4       PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+.esysmem            : &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; RAML4       PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;5-4修改代码存储位置与运行位置&quot;&gt;5. 4：修改代码存储位置与运行位置&lt;/h3&gt;
+
+&lt;p&gt;将&lt;code class=&quot;highlighter-rouge&quot;&gt;.cinit              : &amp;gt; FLASHA      PAGE = 0&lt;/code&gt;改为&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+.cinit : LOAD &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FLASHA, PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0       
+
+                 RUN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; RAML0,       PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0   
+
+                 LOAD_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_cinit_loadstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 RUN_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_cinit_runstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                  SIZE&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_cinit_size&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;将程序中变量初值和常量加载到&lt;strong&gt;FLASH&lt;/strong&gt;运行在&lt;strong&gt;RAM&lt;/strong&gt;中&lt;/p&gt;
+
+&lt;p&gt;将&lt;code class=&quot;highlighter-rouge&quot;&gt;.econst             : &amp;gt; FLASHA      PAGE = 0&lt;/code&gt;改为&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+.econst :   LOAD &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FLASHA,   PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0       
+
+                 RUN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; RAML0,       PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0        
+
+                 LOAD_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_econst_loadstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                RUN_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_econst_runstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 SIZE&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_econst_size&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;将&lt;code class=&quot;highlighter-rouge&quot;&gt;.pinit              : &amp;gt; FLASHA,     PAGE = 0 &lt;/code&gt;改为&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+.pinit :   LOAD &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FLASHA,   PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0         
+
+                 RUN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; RAML0, PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0        
+
+                 LOAD_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_pinit_loadstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 RUN_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_pinit_runstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 SIZE&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_pinit_size&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;将&lt;code class=&quot;highlighter-rouge&quot;&gt;.switch             : &amp;gt; FLASHA      PAGE = 0  &lt;/code&gt;修改为&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.switch :   LOAD &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FLASHA,   PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0        
+
+                 RUN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; RAML0,       PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0       
+
+                 LOAD_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_switch_loadstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 RUN_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_switch_runstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 SIZE&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_switch_size&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;增加&lt;code class=&quot;highlighter-rouge&quot;&gt;.const&lt;/code&gt;段的定义，或者将拷贝函数中&lt;code class=&quot;highlighter-rouge&quot;&gt;.const&lt;/code&gt;的拷贝注释掉&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.const :   LOAD &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FLASHA,   PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0        
+
+                 RUN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; RAML0, PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0        
+
+                 LOAD_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_const_loadstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 RUN_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_const_runstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 SIZE&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_const_size&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;5-5修改text段&quot;&gt;5. 5修改.text段&lt;/h3&gt;
+
+&lt;p&gt;为了保证足够代码空间，修改MEMORY PAGE 0中&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RAML1       : origin &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x009000, length &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x001000        
+
+ RAML2       : origin &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x00A000, length &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x001000     
+
+ RAML3       : origin &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x00B000, length &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x001000  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;改为&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  RAM_L1L2L3       : origin &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x009000, length &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x003000  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然后将SECTIONS中&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.text               : &amp;gt; FLASHA      PAGE = 0&lt;/code&gt;改为&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.text :   LOAD &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FLASHA,  PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0        
+
+                 RUN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; RAM_L1L2L3, PAGE &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0        
+
+                 LOAD_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_text_loadstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 RUN_START&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_text_runstart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,
+
+                 SIZE&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;_text_size&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h2 id=&quot;6rebuild--project-和烧写&quot;&gt;6.rebuild  project 和烧写&lt;/h2&gt;
+&lt;p&gt;方法和debug一样&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;备注：本文一共需要需要的文件均已经修改和添加在附件文件下【flash-sram】中&lt;/em&gt;
+【百度云下载链接】：&lt;a href=&quot;https://pan.baidu.com/s/10LwtP3d7IoOeleQKL-Z0pw&quot;&gt;【flash-sram&lt;/a&gt;
+【提取码】： 3xi2&lt;/p&gt;</content><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><category term="blog" /><category term="DSP" /><category term="Flash" /><category term="Sram" /><category term="嵌入式" /><summary type="html">在我们实际的项目当中，有时候仅仅烧写在Flash中的速度跟我们方针的时候是完全不一样的，仿真的时候可以实现的功能可能一烧写进FLASH中就没有了效果，这就需要我们把FLASH中的程序复制到SRAM中运行。</summary></entry><entry><title type="html">DSP烧写进flash的方法（F28335）</title><link href="http://localhost:4000/blog/2018/10/29/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html" rel="alternate" type="text/html" title="DSP烧写进flash的方法（F28335）" /><published>2018-10-29T00:00:00+08:00</published><updated>2018-10-29T00:00:00+08:00</updated><id>http://localhost:4000/blog/2018/10/29/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4</id><content type="html" xml:base="http://localhost:4000/blog/2018/10/29/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html">&lt;p&gt;&lt;img src=&quot;https://s1.ax2x.com/2018/10/30/5X6lXK.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;在使用DSP的时候如何烧写程序是一个比较头疼的问题，像在STM32上面直接使用仿真器就可以进行烧写，不需要做什么额外的事情，但是在DSP里面，平时的程序经过仿真器只是将程序复制到了Sram里面，我们烧写程序需要对我们的工程做一些改变，才能顺利的烧写程序&lt;!--more--&gt;&lt;/p&gt;
 
