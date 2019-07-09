@@ -1159,20 +1159,18 @@ input:focus {
 .m-post-list > article {
   padding-bottom: 1.3rem;
   margin: 2.6rem 0 1rem 0; }
-  .m-post-list > article > h1 {
-    font-size: 1.4rem; }
-    .m-post-list > article > h1 > a, .m-post-list > article > h1 > a:link, .m-post-list > article > h1 > a:visited {
-      color: #111; }
-      .m-post-list > article > h1 > a svg path, .m-post-list > article > h1 > a:link svg path, .m-post-list > article > h1 > a:visited svg path {
-        fill: #111; }
-    .not-touch .m-post-list > article > h1 > a.hover, .not-touch .m-post-list > article > h1 > a:hover {
-      color: #0033CC; }
-      .not-touch .m-post-list > article > h1 > a.hover svg path, .not-touch .m-post-list > article > h1 > a:hover svg path {
-        fill: #0033CC; }
-    .m-post-list > article > h1 > a.active, .m-post-list > article > h1 > a:active {
-      color: #0033CC; }
-      .m-post-list > article > h1 > a.active svg path, .m-post-list > article > h1 > a:active svg path {
-        fill: #0033CC; }
+  .m-post-list > article > h1 > a, .m-post-list > article > h1 > a:link, .m-post-list > article > h1 > a:visited {
+    color: #111; }
+    .m-post-list > article > h1 > a svg path, .m-post-list > article > h1 > a:link svg path, .m-post-list > article > h1 > a:visited svg path {
+      fill: #111; }
+  .not-touch .m-post-list > article > h1 > a.hover, .not-touch .m-post-list > article > h1 > a:hover {
+    color: #0033CC; }
+    .not-touch .m-post-list > article > h1 > a.hover svg path, .not-touch .m-post-list > article > h1 > a:hover svg path {
+      fill: #0033CC; }
+  .m-post-list > article > h1 > a.active, .m-post-list > article > h1 > a:active {
+    color: #0033CC; }
+    .m-post-list > article > h1 > a.active svg path, .m-post-list > article > h1 > a:active svg path {
+      fill: #0033CC; }
   .m-post-list > article > a {
     font-size: 0.9rem; }
   .m-post-list > article:not(:last-child) {
