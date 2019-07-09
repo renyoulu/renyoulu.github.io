@@ -13,7 +13,7 @@ category:  blog
 ![](https://s1.ax1x.com/2018/10/30/i2LMWV.png)
 
 
-在我们实际的项目当中，有时候仅仅烧写在Flash中的速度跟我们方针的时候是完全不一样的，仿真的时候可以实现的功能可能一烧写进FLASH中就没有了效果，这就需要我们把FLASH中的程序复制到SRAM中运行。<!--more-->在flash中和SRAM之所以不一样，是因为FLSAH的速度实在是有限，一旦遇到一些高速信号，例如高频的PWM波就没辙了，只有把程序复制到SRAM中才能和仿真的时候一样。如果如何烧写不清楚，可以参考上一篇博客![DSP烧写进FLASH](https://renyoulu.com/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html)
+在我们实际的项目当中，有时候仅仅烧写在Flash中的速度跟我们方针的时候是完全不一样的，仿真的时候可以实现的功能可能一烧写进FLASH中就没有了效果，这就需要我们把FLASH中的程序复制到SRAM中运行。<!--more-->在flash中和SRAM之所以不一样，是因为FLSAH的速度实在是有限，一旦遇到一些高速信号，例如高频的PWM波就没辙了，只有把程序复制到SRAM中才能和仿真的时候一样。如果如何烧写不清楚，可以参考上一篇博客 [ DSP烧写进FLASH ](https://renyoulu.com/blog/2018/10/29/DSP_Flash烧写步骤.html)
 
 废话不多说直接上手做。
 *注：本文中最后修改好的文件在文末下载链接当中*
@@ -280,6 +280,7 @@ RAML1       : origin = 0x009000, length = 0x001000
 
 
 *备注：本文一共需要需要的文件均已经修改和添加在附件文件下【flash-sram】中*
-【百度云下载链接】：[【flash-sram](https://pan.baidu.com/s/10LwtP3d7IoOeleQKL-Z0pw)
+
+【百度云下载链接】：[【flash-sram】](https://pan.baidu.com/s/10LwtP3d7IoOeleQKL-Z0pw)
 【提取码】： 3xi2
 
