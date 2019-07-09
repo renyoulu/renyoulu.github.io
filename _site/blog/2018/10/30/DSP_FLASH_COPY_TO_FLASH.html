@@ -327,14 +327,16 @@
 <h3 id="1程序启动的过程一般为">1.程序启动的过程一般为：</h3>
 
 <pre><code class="language-mermaid">graph TD;
-    code_start--&gt;wd_disable;
-    wd_disable--&gt;c_int00-;
-    c_int00---&gt;mian（）;
+    A--&gt;B;
+    A--&gt;C;
+    B--&gt;D;
+    C--&gt;D;
+
 </code></pre>
 
 <p>为了完成程序的拷贝，需要在C语言初始化之前插入一个程序拷贝的环节，修改之后的流程为：</p>
 
-<pre><code class="language-mermaid">graph TD;
+<pre><code class="language-mermaid">    graph TD;
     code_start--&gt;wd_disable;
     wd_disable--&gt;copy_sections;
     copy_sections---&gt;c_int00-;
@@ -572,7 +574,7 @@ copysections        : <span class="o">&gt;</span> FLASHA,    PAGE <span class="o
 </div></div>
 				</footer>
 			</article>
-			<div class="article-previous-next clearfix"><div class="article-next"><span>下篇</span><a href="/blog/2018/10/29/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html">DSP烧写进flash的方法（F28335）</a></div></div></div>
+			<div class="article-previous-next clearfix"><div class="article-previous"><span>上篇</span><a href="/blog/2019/07/09/ALLGRO%E7%94%9F%E6%88%90%E5%9D%90%E6%A0%87%E6%96%87%E4%BB%B6.html">Allgro生成坐标文件</a></div><div class="article-next"><span>下篇</span><a href="/blog/2018/10/29/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html">DSP烧写进flash的方法（F28335）</a></div></div></div>
 	</div>
 </div></div>
       </div>
@@ -930,5 +932,10 @@ copysections        : <span class="o">&gt;</span> FLASHA,    PAGE <span class="o
       });
     }, 1000);
   });
-})();</script></body>
+})();</script><script>
+  window.Lazyload.js('https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js', function() {
+    mermaid.init(undefined, '.language-mermaid');
+    mermaid.initialize({ startOnLoad: true });
+  });
+</script></body>
 </html>

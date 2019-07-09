@@ -430,5 +430,10 @@
       window.scrollTopAnchor('#' + $(this).parent().attr('id'));
     });
   });
-})();</script></body>
+})();</script><script>
+  window.Lazyload.js('https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js', function() {
+    mermaid.init(undefined, '.language-mermaid');
+    mermaid.initialize({ startOnLoad: true });
+  });
+</script></body>
 </html>

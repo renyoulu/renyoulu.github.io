@@ -1,10 +1,9 @@
 <!DOCTYPE html><html lang="zh">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>归档 - Renyou's blog</title>
-<meta name="description" content="Renyou's Blog | 卢任有的博客
-">
-<link rel="canonical" href="http://localhost:4000/all.html"><link rel="alternate" type="application/rss+xml" title="Renyou's blog" href="http://localhost:4000/feed.xml">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Allgro生成坐标文件 - Renyou's blog</title>
+<meta name="description" content="在使用Allgro的时候，经常需要PCB厂家帮你贴片，也就是PCBA服务，厂家会要求你给一个坐标文件的BOM表，那么怎么样的坐标文件才是规范的呢,本文给出一种比较合理的生成坐标文件的方法            Designator      Comment      Footprint      Mid X   ...">
+<link rel="canonical" href="http://localhost:4000/blog/2019/07/09/ALLGRO%E7%94%9F%E6%88%90%E5%9D%90%E6%A0%87%E6%96%87%E4%BB%B6.html"><link rel="alternate" type="application/rss+xml" title="Renyou's blog" href="http://localhost:4000/feed.xml">
 <!-- for Safari on iOS https://developer.apple.com/ios/human-interface-guidelines/icons-and-images/app-icon/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo/icon-180x180.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/images/logo/icon-167x167.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/images/logo/icon-152x152.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/images/logo/icon-120x120.png"><link rel="shortcut icon" href="/assets/images/logo/icon-120x120.png">
 <!-- for Chrome on Android https://developer.chrome.com/multidevice/android/installtohomescreen -->
 <meta name="mobile-web-app-capable" content="yes"><link rel="icon" sizes="192x192" href="/assets/images/logo/icon-192x192.png">
@@ -289,66 +288,120 @@
     </nav>
   </div>
 </header>
-<div class="m-page-main"><div class="m-all js-all">
-  <div class="main">
-    <div class="m-search-box js-search-box">
-      <div class="icon-search"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-</svg></div>
-      <input type="text" />
-      <div class="icon-clear"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-</svg></div>
-    </div><div class="m-tags js-tags">
-  <ul>
-    <li>
-      <button type="button" class="js-article-tag js-tag-show-all all pill-button inactive" data-encode="">
-        Show All<div class="tag-count">6</div>
-      </button>
-    </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="Allgro">
-          <span>Allgro</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-2 pill-button inactive" data-encode="DSP">
-          <span>DSP</span><div class="tag-count">2</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-2 pill-button inactive" data-encode="Flash">
-          <span>Flash</span><div class="tag-count">2</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="Linux">
-          <span>Linux</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="PCB">
-          <span>PCB</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="Sram">
-          <span>Sram</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="first+blog">
-          <span>first blog</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="github">
-          <span>github</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="jeykll">
-          <span>jeykll</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="%E4%BD%9C%E5%93%81%E5%B1%95%E7%A4%BA">
-          <span>作品展示</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-2 pill-button inactive" data-encode="%E5%B5%8C%E5%85%A5%E5%BC%8F">
-          <span>嵌入式</span><div class="tag-count">2</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1">
-          <span>硬件设计</span><div class="tag-count">1</div>
-        </button>
-      </li><li><button type="button" class="js-article-tag tag-1 pill-button inactive" data-encode="%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2">
-          <span>第一篇博客</span><div class="tag-count">1</div>
-        </button>
-      </li></ul>
-</div>
-<!--group by year: http://stackoverflow.com/questions/19086284/jekyll-liquid-templating-how-to-group-blog-posts-by-year-->
-    <div class="js-result m-result"></div>
+<div class="m-page-main"><div class="m-post">
+	<div class="main clearfix js-main">
+		<div class="col-2 js-col-2">
+			<aside class="js-article-aside"><div class="m-toc js-toc"></div></aside>
+		</div>
+		<div class="col-1">
+			<article class="js-article" itemscope itemtype="http://schema.org/BlogPosting">
+				<meta itemprop="mainEntityOfPage" itemscope itemType="https://schema.org/WebPage"/>
+				<header class="main-header"><h1 itemprop="headline" itemprop="name headline">Allgro生成坐标文件</h1><div class="m-article-info clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Renyoulu"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=Allgro">Allgro</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1">硬件设计</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=PCB">PCB</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><time class="article-meta" datetime="2019-07-09T00:00:00+08:00"
+          itemprop="datePublished">2019年 07月09日
+        </time></div>
   </div>
+</div>
+</header>
+				<div class="m-article-content js-article-content" itemprop="articleBody"><p>在使用Allgro的时候，经常需要PCB厂家帮你贴片，也就是PCBA服务，厂家会要求你给一个坐标文件的BOM表，那么怎么样的坐标文件才是规范的呢,本文给出一种比较合理的生成坐标文件的方法</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Designator</th>
+      <th style="text-align: left">Comment</th>
+      <th style="text-align: left">Footprint</th>
+      <th style="text-align: left">Mid X</th>
+      <th style="text-align: center">Mid Y</th>
+      <th style="text-align: right">Rotation</th>
+      <th style="text-align: right">Layer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>C1</td>
+      <td style="text-align: left">0.1uF</td>
+      <td style="text-align: left">CAP0603</td>
+      <td style="text-align: left">12.667</td>
+      <td style="text-align: center">24.888</td>
+      <td style="text-align: right">90</td>
+      <td style="text-align: right">B</td>
+    </tr>
+    <tr>
+      <td>R1</td>
+      <td style="text-align: left">1R</td>
+      <td style="text-align: left">RES0603</td>
+      <td style="text-align: left">100.667</td>
+      <td style="text-align: center">110.888</td>
+      <td style="text-align: right">180</td>
+      <td style="text-align: right">T</td>
+    </tr>
+    <tr>
+      <td>D1</td>
+      <td style="text-align: left">LED-Y</td>
+      <td style="text-align: left">0603D</td>
+      <td style="text-align: left">220.667</td>
+      <td style="text-align: center">89.888</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">B</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--more-->
+<p><em>快一年的时间没有更新博客，这一段时间内心都不是很坚定，在这里立个flag，以后有时间尽量都更新，一个礼拜无论如何需要更新一篇。</em>
+生成的坐标文件如下所示</p>
+
+<h2 id="1allegro菜单点tools-reports">1.Allegro菜单点Tools, Reports</h2>
+<ol>
+  <li>从Available Reports里找Placed Component Report, 双击让它跑到下面框里.</li>
+  <li>选中Write Report, 点Report. 此时会在.brd所在目录下生成一个pcp_rep.rpt
+如下图所示
+<img src="https://s2.ax1x.com/2019/07/09/ZyJUdH.jpg" alt="report" /></li>
+</ol>
+
+<h2 id="2使用excel打开pcp_reprpt">2.使用Excel打开pcp_rep.rpt</h2>
+<p>类型选”所有文件”, 找到刚生成的pcp_rep.rpt</p>
+<ol>
+  <li>出现”文本导入向导”, 直接点下一步.</li>
+  <li>分隔符号这里把”逗号”选上, 然后点下一步.</li>
+  <li>列数据格式, 选”文本”, 然后点完成.</li>
+</ol>
+
+<h2 id="3修改表格">3.修改表格</h2>
+<p>表格出来了, 前四行没用, 删掉. 表头要按JLC的格式修改, 具体如下:</p>
+<ol>
+  <li>REFDES, 改成Designator.</li>
+  <li>COMP_DEVICE_TYPE, 这列可以删掉.</li>
+  <li>COMP_VALUE, 改成Comment.</li>
+  <li>COMP_TOL, 这列可以删掉.</li>
+  <li>SYM_NAME, 改成Footprint. 下面的封装如果和JLC的不一样也要改. 比如我用的封装名称都是公制, RESC2012, CAPC1608之类, 要改成相应的英制RESC0805, CAPC0603. 没有前缀也可以, 但是在excel可能就变成805/603了, 不影响下单. SOP类的器件最好改成SOIC-8, SOIC-14这样, 等等, 总之以JLC给的参考文件为准.  选中这一列, 几次查找替换命令就解决了.</li>
+  <li>SYM_X, SYM_Y, 这两个改成Mid X和Mid Y, 底下的单位需要是毫米, mil不行.
+<strong>为什么最好不要用使用mil的原因是厂家机器使用的默认单位是mm，如果表格内单位是mil的话，厂家单位转换的过程当中会出现误差，可能会导致走线非常密集的板卡最终走线出现偏差。</strong></li>
+  <li>SYM_ROTATE, 改成Rotation.</li>
+  <li>SYM_MIRROR, 改成Layer. 底下的YES全部替换成B, NO替换成T.</li>
+  <li>删除直插和需要自己贴的元器件，完事！
+    <h2 id="4备注">4.备注</h2>
+    <p><em>在原理图设计的过程中，就最好充分的考虑选用的器件的名称要到位，并且有些参数事先写好，电容的耐压值或者电阻的特殊要求都在原理图设计的时候体现出来，封装最好按照标准命名方法，既可以提高工作效率，也可以让工程尽量的标准化。这样再出BOM的时候，基本上不用修改内容。</em></p>
+  </li>
+</ol>
+</div>
+				<footer><meta itemprop="dateModified" content="2019-07-09T00:00:00+08:00"><div class="article-license"><div class="m-license"><div class="clearfix"><a class="octocat" href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2019-07-09-ALLGRO生成坐标文件.md">
+        <img alt="View on Github" src="/assets/images/octocat.jpg" />
+      </a><p><a href="https://github.com/renyoulu/renyoulu.github.io/tree/master/_posts/2019-07-09-ALLGRO生成坐标文件.md">在 Github 上查阅此文。</a></p><p>本文遵守 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> 许可协议。</p><a class="license" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+      <img alt="Creative Commons License" src="/assets/images/license-cc4.png" />
+    </a><p>欢迎转载，转载需注明出处，且禁止用于商业目的。</p>
+  </div>
+</div></div>
+				</footer>
+			</article>
+			<div class="article-previous-next clearfix"><div class="article-next"><span>下篇</span><a href="/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html">DSP将flash中的程序复制到sram运行</a></div></div></div>
+	</div>
 </div></div>
       </div>
     </div><div class="m-page-footer js-page-footer">
@@ -437,243 +490,275 @@
   })();
 </script><script>(function() {
   var SOURCES = window.TEXT_VARIABLES.sources;
-  function queryString() {
-    // This function is anonymous, is executed immediately and
-    // the return value is assigned to QueryString!
-    var i = 0, queryObj = {}, pair;
-    var queryStr = window.location.search.substring(1);
-    var queryArr = queryStr.split('&');
-    for (i = 0; i < queryArr.length; i++) {
-      pair = queryArr[i].split('=');
-      // If first entry with this name
-      if (typeof queryObj[pair[0]] === 'undefined') {
-        queryObj[pair[0]] = pair[1];
-        // If second entry with this name
-      } else if (typeof queryObj[pair[0]] === 'string') {
-        queryObj[pair[0]] = [queryObj[pair[0]], pair[1]];
-        // If third or later entry with this name
-      } else {
-        queryObj[pair[0]].push(pair[1]);
-      }
-    }
-    return queryObj;
+  function scrollAnimateTo(destination, duration, callback) {
+    var $body = $('html, body'), bodyScrollTop = $body.scrollTop();
+    if(bodyScrollTop === destination) { return; }
+    $body.animate({ scrollTop: destination }, duration, callback);
   }
-
-  function memorize(f) {
-    var cache = {};
-    return function () {
-      var key = Array.prototype.join.call(arguments, ',');
-      if (key in cache) return cache[key];
-      else return cache[key] = f.apply(this, arguments);
-    };
-  }
-
-  function initData(json) {
-    var _data = JSON.parse(json), i, j, cur, _tags;
-    Object.keys(_data).forEach(function(year) {
-      for (i = 0; i < _data[year].length; i++) {
-        cur = _data[year][i], _tags = cur.tags;
-        cur.title = window.decodeUrl(cur.title);
-        cur.url = window.decodeUrl(cur.url);
-        if (_tags && _tags.length > 0) {
-          for (j = 0; j < _tags.length; j++) {
-            _tags[j] = window.decodeUrl(_tags[j]);
-          }
-        }
-      }
+  window.scrollTopAnchor = function(anchor, callback) {
+    scrollAnimateTo($(anchor).offset().top, 400, function() {
+      window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+      callback && callback();
     });
-    return _data;
-  }
-
-  var setUrlQuery = (function() {
-    var baseUrl =  window.location.href.split('?')[0];
-    return function(query) {
-      if (typeof query === 'string') {
-        window.history.replaceState(null, '', baseUrl + query);
-      } else {
-        window.history.replaceState(null, '', baseUrl);
-      }
-    };
-  })();
-
-  var data = initData('{"2019":[{"key":"1","title":"Allgro%E7%94%9F%E6%88%90%E5%9D%90%E6%A0%87%E6%96%87%E4%BB%B6","tags":["Allgro","%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1","PCB"],"url":"%2Fblog%2F2019%2F07%2F09%2FALLGRO%25E7%2594%259F%25E6%2588%2590%25E5%259D%2590%25E6%25A0%2587%25E6%2596%2587%25E4%25BB%25B6.html","date":"07月09日"}],"2018":[{"key":"2","title":"DSP%E5%B0%86flash%E4%B8%AD%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%A4%8D%E5%88%B6%E5%88%B0sram%E8%BF%90%E8%A1%8C","tags":["DSP","Flash","Sram","%E5%B5%8C%E5%85%A5%E5%BC%8F"],"url":"%2Fblog%2F2018%2F10%2F30%2FDSP_FLASH_COPY_TO_FLASH.html","date":"10月30日"},{"key":"3","title":"DSP%E7%83%A7%E5%86%99%E8%BF%9Bflash%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%88F28335%EF%BC%89","tags":["DSP","Flash","%E5%B5%8C%E5%85%A5%E5%BC%8F"],"url":"%2Fblog%2F2018%2F10%2F29%2FDSP_Flash%25E7%2583%25A7%25E5%2586%2599%25E6%25AD%25A5%25E9%25AA%25A4.html","date":"10月29日"},{"key":"4","title":"%E9%83%A8%E5%88%86%E4%B8%AA%E4%BA%BA%E5%A4%A7%E5%AD%A6%E6%9C%9F%E9%97%B4%E4%BD%9C%E5%93%81","tags":["%E4%BD%9C%E5%93%81%E5%B1%95%E7%A4%BA"],"url":"%2Fblog%2F2018%2F05%2F17%2F%25E9%2583%25A8%25E5%2588%2586%25E4%25B8%25AA%25E4%25BA%25BA%25E5%25A4%25A7%25E5%25AD%25A6%25E6%259C%259F%25E9%2597%25B4%25E4%25BD%259C%25E5%2593%2581.html","date":"05月17日"},{"key":"5","title":"%E5%9C%A8Linux%E4%B8%8A%E5%88%A9%E7%94%A8Github%2Bjekyll%E5%BB%BA%E7%AB%8B%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%EF%BC%881%EF%BC%89","tags":["jeykll","github","Linux"],"url":"%2Fblog%2F2018%2F04%2F30%2F%25E5%259C%25A8Linux%25E4%25B8%258A%25E5%2588%25A9%25E7%2594%25A8Github%2Bjekyll%25E5%25BB%25BA%25E7%25AB%258B%25E4%25B8%25AA%25E4%25BA%25BA%25E5%258D%259A%25E5%25AE%25A2-1.html","date":"04月30日"},{"key":"6","title":"%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2","tags":["first+blog","%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2"],"url":"%2F2018%2F04%2F25%2Ffirst-blog.html","date":"04月25日"}]}');
-
-  var searchByTag = memorize(function(tag) {
-    var i, j, cur, _tags, _tag, _data = {};
-    Object.keys(data).forEach(function(year) {
-      for (i = 0; i < data[year].length; i++) {
-        cur = data[year][i], _tags = cur.tags;
-        if (_tags && _tags.length > 0) {
-          for (j = 0; j < _tags.length; j++) {
-            _tag = _tags[j];
-            if (_tag === tag) {
-              if (!_data[year]) {
-                _data[year] = [];
-              }
-              _data[year].push(cur);
-              break;
-            }
-          }
-        }
-      }
-    });
-    return _data;
-  });
-
-  var searchByQuery = function(query) {
-    var i, cur, _title, _data = { _: [] };
-    Object.keys(data).forEach(function(year) {
-      for (i = 0; i < data[year].length; i++) {
-        cur = data[year][i], _title = cur.title;
-        if (_title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
-          _data._.push(cur);
-        }
-      }
-    });
-    return _data;
   };
-
   window.Lazyload.js(SOURCES.jquery, function() {
-    var $root = $('.js-all');
-    var $searchBox = $('.js-search-box');
-    var $searchInput = $searchBox.children('input');
-    var $searchClear = $searchBox.children('.icon-clear');
-    var $tags = $('.js-tags');
-    var $articleTags = $('.js-article-tag');
-    var $tagShowAll = $('.js-tag-show-all');
-    var $result = $('.js-result');
-    var $lastFocusButton = null;
-
-    function addClass(dom, className) {
-      dom.hasClass(className) || dom.addClass(className);
-    }
-    function removeClass(dom, className) {
-      dom.hasClass(className) && dom.removeClass(className);
-    }
-
-    var renderHeading = memorize(function (year) {
-      return $('<h2 class="year">' + year + '</h2>');
-    });
-    var renderItem = memorize(function (key, title, date, url) {
-      return $('<li><span class="date">' + date + '</span><a class="link" href="' + url + '">' + title + '</a></li>');
-    });
-    function render(data) {
-      var $dom = $('<div></div>'), $section, $ul, i, cur;
-      Object.keys(data).sort(function(a, b) {
-        return b.localeCompare(a);
-      }).forEach(function(year) {
-        $section = $('<section></section>'), $ul = $('<ul></ul>');
-        (year === '_') || $section.append(renderHeading(year));
-        for (i = 0; i < data[year].length; i++) {
-          cur = data[year][i];
-          $ul.append(renderItem(cur.key, cur.title, cur.date, cur.url, cur.tags));
-        }
-        $dom.append($section.append($ul));
-      });
-      return $dom;
-    }
-
-    function searchButtonsByTag(_tag/*raw tag*/) {
-      if (!_tag) {
-        return $tagShowAll;
-      }
-      var _buttons = $articleTags.filter('[data-encode="' + _tag + '"]');
-      if (_buttons.length === 0) {
-        return $tagShowAll;
-      }
-      return _buttons;
-    }
-    function buttonFoucs(target) {
-      if (target) {
-        addClass(target, 'focus');
-        $lastFocusButton && !$lastFocusButton.is(target) && removeClass($lastFocusButton, 'focus');
-        $lastFocusButton = target;
-      }
-    }
-
-    function setIsSearch() {
-      addClass($root, 'search');
-    }
-    function setNotSearch() {
-      removeClass($root, 'search');
-    }
-    function setIsEmpty() {
-      removeClass($searchBox, 'not-empty');
-    }
-    function setNotEmpty() {
-      addClass($searchBox, 'not-empty');
-    }
-    function setSearchBoxVal(val) {
-      ($searchInput.val() === val) || $searchInput.val(val);
-    }
-    function clearSearchBox() {
-      setSearchBoxVal(''); queryInput('');
-    }
-
-    function showAll() {
-      setNotSearch(); setIsEmpty(); buttonFoucs($tagShowAll); setUrlQuery();
-      $result.html(render(data));
-    }
-    function tagSelect(tag/*decode tag*/, target) {
-      var _tag;
-      if (tag === '' || tag === undefined) {
-        showAll();
-      } else {
-        $result.html(render(searchByTag(tag)));
-      }
-      if (target) {
-        buttonFoucs(target);
-        _tag = target.attr('data-encode');
-        if (_tag === '' || typeof _tag !== 'string') {
-          setUrlQuery();
-        } else {
-          setUrlQuery('?tag=' + _tag);
-        }
-      }
-    }
-    function queryInput(query) {
-      if (query === '' || typeof query !== 'string') {
-        showAll();
-      } else {
-        $result.html(render(searchByQuery(query))); setIsSearch(); setNotEmpty(); setUrlQuery('?q=' + query);
-
-      }
-    }
-
-    (function() {
-      $articleTags.removeClass('inactive');
-      var query = queryString(), _tag = query.tag, _q = query.q;
-      if (_tag !== undefined) {
-        query.tag === undefined || (_tag = query.tag);
-        tagSelect(window.decodeUrl(_tag));
-        buttonFoucs(searchButtonsByTag(_tag));
-      } else if (_q !== undefined) {
-        _q = window.decodeUrl(_q);
-        queryInput(_q); setSearchBoxVal(_q);
-      } else {
-        showAll();
-      }
-    })();
-
-    $tags.on('click', 'button', function() {
-      tagSelect($(this).children('span').text(), $(this));
+    var $articleContent = $('.m-post, .m-page').find('.m-article-content'), $this;
+    $articleContent.children('.highlight').each(function() {
+      $this = $(this);
+      $this.attr('data-lang', $this.find('code').attr('data-lang'));
     });
 
-    $searchInput.on('input', window.throttle(function() {
-      queryInput($(this).val());
-    }, 400));
-    $searchInput.on('focus', function() {
-      addClass($(this), 'focus');
+    $articleContent.children('h1, h2, h3, h4, h5, h6').each(function() {
+      $this = $(this);
+      $this.append($('<a class="anchor" aria-hidden="true"></a>').html('<svg fill="#000000" width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>'));
     });
-    $searchInput.on('blur', function() {
-      removeClass($(this), 'focus');
-    });
-    $searchClear.on('click', function() {
-      clearSearchBox();
+    $articleContent.on('click', '.anchor', function() {
+      window.scrollTopAnchor('#' + $(this).parent().attr('id'));
     });
   });
-})();
-</script><script>
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $document = $(window.document), $root;
+    var rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop, lastScrollTop;
+    var offsetBottom = 0, disabled = false, hasInit = false;
+
+    function setOptions(options) {
+      var _options = options || {};
+      _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      calc(true);
+    }
+    function initData() {
+      top();
+      var rootOffset = $root.offset();
+      rootHeight = $root.outerHeight();
+      rootTop = rootOffset.top;
+      rootLeft = rootOffset.left;
+    }
+    function calc(needInitData) {
+      needInitData && initData();
+      scrollBottom = $document.outerHeight() - offsetBottom - rootHeight;
+      rootBottomTop = scrollBottom - rootTop;
+    }
+    function top() {
+      $root.removeClass('fixed').css({
+        left: 0,
+        top: 0
+      });
+    }
+    function fixed() {
+      $root.addClass('fixed').css({
+        left: rootLeft + 'px',
+        top: 0
+      });
+    }
+    function bottom() {
+      $root.removeClass('fixed').css({
+        left: 0,
+        top: rootBottomTop + 'px'
+      });
+    }
+    function setState(force) {
+      force !== true && (force = false);
+      var scrollTop = $window.scrollTop();
+      if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+        (!force && lastScrollTop >= rootTop && lastScrollTop <= scrollBottom) || fixed();
+      } else if (scrollTop < rootTop) {
+        (!force && lastScrollTop < rootTop) || top();
+      } else {
+        (!force && lastScrollTop > scrollBottom) || bottom();
+      }
+      lastScrollTop = scrollTop;
+    }
+    function init() {
+      if(!hasInit) {
+        var interval, timeout;
+        calc(true); setState();
+        // run calc every 1.5 seconds
+        interval = setInterval(function() {
+          calc();
+        }, 1500);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 50000);
+        window.pageLoad.then(function() {
+          clearInterval(interval);
+          clearTimeout(timeout);
+        });
+        $window.on('scroll', function() {
+          disabled || setState();
+        });
+        $window.on('resize', window.throttle(function() {
+          disabled || (calc(true), setState(true));
+        }, 100));
+        hasInit = true;
+      }
+    }
+
+    function affix(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $root, $tocUl = $('<ul></ul>'), $tocLi, $headings, $activeLast, $activeCur;
+    var selectors = 'h1,h2,h3', container = 'body', disabled = false;
+    var headingsPos, scrolling = false, rendered = false, hasInit = false;
+    function setOptions(options) {
+      var _options = options || {};
+      _options.selectors && (selectors = _options.selectors);
+      _options.container && (container = _options.container);
+      _options.disabled !== undefined && (disabled = _options.disabled);
+      $headings = $(container).find(selectors);
+      calc();
+    }
+    function calc() {
+      headingsPos = [];
+      $headings.each(function() {
+        headingsPos.push(Math.floor($(this).offset().top));
+      });
+    }
+    function setState(element, disabled) {
+      var scrollTop = $window.scrollTop(), i;
+      if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+      if (element) {
+        $activeCur = element;
+      } else {
+        for (i = 0; i < headingsPos.length; i++) {
+          if (scrollTop >= headingsPos[i]) {
+            $activeCur = $tocLi.eq(i);
+          } else {
+            $activeCur || ($activeCur = $tocLi.eq(i));
+            break;
+          }
+        }
+      }
+      $activeLast && $activeLast.removeClass('toc-active');
+      ($activeLast = $activeCur).addClass('toc-active');
+    }
+    function render() {
+      if(!rendered) {
+        $root.append($tocUl);
+        $headings.each(function() {
+          var $this = $(this);
+          $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+            .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+        });
+        $tocLi = $tocUl.children('li');
+        $tocUl.on('click', 'a', function(e) {
+          e.preventDefault();
+          var $this = $(this);
+          scrolling = true;
+          setState($this.parent());
+          window.scrollTopAnchor($this.attr('href'), function() {
+            scrolling = false;
+          });
+        });
+      }
+      rendered = true;
+    }
+    function init() {
+      var interval, timeout;
+      if(!hasInit) {
+        render(); calc(); setState(null, scrolling);
+        // run calc every 1.5 seconds
+        interval = setInterval(function() {
+          calc();
+        }, 1500);
+        timeout = setTimeout(function() {
+          clearInterval(interval);
+        }, 50000);
+        window.pageLoad.then(function() {
+          clearInterval(interval);
+          clearTimeout(timeout);
+        });
+        $window.on('scroll', function() {
+          disabled || setState(null, scrolling);
+        });
+        $window.on('resize', window.throttle(function() {
+          if (!disabled) {
+            render(); calc(); setState(null, scrolling);
+          }
+        }, 100));
+      }
+      hasInit = true;
+    }
+    function toc(options) {
+      $root = this;
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    toc.setOptions = setOptions;
+    $.fn.toc = toc;
+  });
+})();(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $pageStage = $('.js-page-stage');
+    var $pageFooter = $('.js-page-footer');
+    var $articleContent = $('.js-article-content');
+    var $articleAside = $('.js-article-aside');
+    var $toc = $('.js-toc');
+    var $col2 = $('.js-col-2');
+    var toc, affix;
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+    var tocDisabled = false;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    if (hasToc) {
+      !$pageStage.hasClass('has-toc') && $pageStage.addClass('has-toc');
+    }
+    tocDisabled = disabled();
+
+    setTimeout(function() {
+      toc = $toc.toc({
+        selectors: TOC_SELECTOR,
+        container: $articleContent,
+        disabled: tocDisabled
+      });
+      affix = $articleAside.affix({
+        offsetBottom: $pageFooter.outerHeight(),
+        disabled: tocDisabled
+      });
+    }, 1000);
+  });
+})();</script><script>
   window.Lazyload.js('https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js', function() {
     mermaid.init(undefined, '.language-mermaid');
     mermaid.initialize({ startOnLoad: true });

@@ -1,5 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh"><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="zh" /><updated>2018-10-30T17:36:05+08:00</updated><id>http://localhost:4000/</id><title type="html">Renyou’s blog</title><subtitle>Renyou's Blog | 卢任有的博客
-</subtitle><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><entry><title type="html">DSP将flash中的程序复制到sram运行</title><link href="http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html" rel="alternate" type="text/html" title="DSP将flash中的程序复制到sram运行" /><published>2018-10-30T00:00:00+08:00</published><updated>2018-10-30T00:00:00+08:00</updated><id>http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH</id><content type="html" xml:base="http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html">&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/10/30/i2LMWV.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh"><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="zh" /><updated>2019-07-09T14:59:38+08:00</updated><id>http://localhost:4000/</id><title type="html">Renyou’s blog</title><subtitle>Renyou's Blog | 卢任有的博客
+</subtitle><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><entry><title type="html">Allgro生成坐标文件</title><link href="http://localhost:4000/blog/2019/07/09/ALLGRO%E7%94%9F%E6%88%90%E5%9D%90%E6%A0%87%E6%96%87%E4%BB%B6.html" rel="alternate" type="text/html" title="Allgro生成坐标文件" /><published>2019-07-09T00:00:00+08:00</published><updated>2019-07-09T00:00:00+08:00</updated><id>http://localhost:4000/blog/2019/07/09/ALLGRO%E7%94%9F%E6%88%90%E5%9D%90%E6%A0%87%E6%96%87%E4%BB%B6</id><content type="html" xml:base="http://localhost:4000/blog/2019/07/09/ALLGRO%E7%94%9F%E6%88%90%E5%9D%90%E6%A0%87%E6%96%87%E4%BB%B6.html">&lt;p&gt;在使用Allgro的时候，经常需要PCB厂家帮你贴片，也就是PCBA服务，厂家会要求你给一个坐标文件的BOM表，那么怎么样的坐标文件才是规范的呢,本文给出一种比较合理的生成坐标文件的方法&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Designator&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Comment&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Footprint&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Mid X&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Mid Y&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Rotation&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Layer&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;C1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;0.1uF&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;CAP0603&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;12.667&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;24.888&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;90&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;B&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;R1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1R&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;RES0603&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;100.667&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;110.888&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;180&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;T&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;D1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;LED-Y&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;0603D&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;220.667&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;89.888&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;B&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;!--more--&gt;
+&lt;p&gt;&lt;em&gt;快一年的时间没有更新博客，这一段时间内心都不是很坚定，在这里立个flag，以后有时间尽量都更新，一个礼拜无论如何需要更新一篇。&lt;/em&gt;
+生成的坐标文件如下所示&lt;/p&gt;
+
+&lt;h2 id=&quot;1allegro菜单点tools-reports&quot;&gt;1.Allegro菜单点Tools, Reports&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;从Available Reports里找Placed Component Report, 双击让它跑到下面框里.&lt;/li&gt;
+  &lt;li&gt;选中Write Report, 点Report. 此时会在.brd所在目录下生成一个pcp_rep.rpt
+如下图所示
+&lt;img src=&quot;https://s2.ax1x.com/2019/07/09/ZyJUdH.jpg&quot; alt=&quot;report&quot; /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;2使用excel打开pcp_reprpt&quot;&gt;2.使用Excel打开pcp_rep.rpt&lt;/h2&gt;
+&lt;p&gt;类型选”所有文件”, 找到刚生成的pcp_rep.rpt&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;出现”文本导入向导”, 直接点下一步.&lt;/li&gt;
+  &lt;li&gt;分隔符号这里把”逗号”选上, 然后点下一步.&lt;/li&gt;
+  &lt;li&gt;列数据格式, 选”文本”, 然后点完成.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;3修改表格&quot;&gt;3.修改表格&lt;/h2&gt;
+&lt;p&gt;表格出来了, 前四行没用, 删掉. 表头要按JLC的格式修改, 具体如下:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;REFDES, 改成Designator.&lt;/li&gt;
+  &lt;li&gt;COMP_DEVICE_TYPE, 这列可以删掉.&lt;/li&gt;
+  &lt;li&gt;COMP_VALUE, 改成Comment.&lt;/li&gt;
+  &lt;li&gt;COMP_TOL, 这列可以删掉.&lt;/li&gt;
+  &lt;li&gt;SYM_NAME, 改成Footprint. 下面的封装如果和JLC的不一样也要改. 比如我用的封装名称都是公制, RESC2012, CAPC1608之类, 要改成相应的英制RESC0805, CAPC0603. 没有前缀也可以, 但是在excel可能就变成805/603了, 不影响下单. SOP类的器件最好改成SOIC-8, SOIC-14这样, 等等, 总之以JLC给的参考文件为准.  选中这一列, 几次查找替换命令就解决了.&lt;/li&gt;
+  &lt;li&gt;SYM_X, SYM_Y, 这两个改成Mid X和Mid Y, 底下的单位需要是毫米, mil不行.
+&lt;strong&gt;为什么最好不要用使用mil的原因是厂家机器使用的默认单位是mm，如果表格内单位是mil的话，厂家单位转换的过程当中会出现误差，可能会导致走线非常密集的板卡最终走线出现偏差。&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;SYM_ROTATE, 改成Rotation.&lt;/li&gt;
+  &lt;li&gt;SYM_MIRROR, 改成Layer. 底下的YES全部替换成B, NO替换成T.&lt;/li&gt;
+  &lt;li&gt;删除直插和需要自己贴的元器件，完事！
+    &lt;h2 id=&quot;4备注&quot;&gt;4.备注&lt;/h2&gt;
+    &lt;p&gt;&lt;em&gt;在原理图设计的过程中，就最好充分的考虑选用的器件的名称要到位，并且有些参数事先写好，电容的耐压值或者电阻的特殊要求都在原理图设计的时候体现出来，封装最好按照标准命名方法，既可以提高工作效率，也可以让工程尽量的标准化。这样再出BOM的时候，基本上不用修改内容。&lt;/em&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name>Renyoulu</name><email>Renyou_Lu@yeah.net</email></author><category term="blog" /><category term="Allgro" /><category term="硬件设计" /><category term="PCB" /><summary type="html">在使用Allgro的时候，经常需要PCB厂家帮你贴片，也就是PCBA服务，厂家会要求你给一个坐标文件的BOM表，那么怎么样的坐标文件才是规范的呢,本文给出一种比较合理的生成坐标文件的方法 Designator Comment Footprint Mid X Mid Y Rotation Layer C1 0.1uF CAP0603 12.667 24.888 90 B R1 1R RES0603 100.667 110.888 180 T D1 LED-Y 0603D 220.667 89.888 0 B</summary></entry><entry><title type="html">DSP将flash中的程序复制到sram运行</title><link href="http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html" rel="alternate" type="text/html" title="DSP将flash中的程序复制到sram运行" /><published>2018-10-30T00:00:00+08:00</published><updated>2018-10-30T00:00:00+08:00</updated><id>http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH</id><content type="html" xml:base="http://localhost:4000/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html">&lt;p&gt;&lt;img src=&quot;https://s1.ax1x.com/2018/10/30/i2LMWV.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;在我们实际的项目当中，有时候仅仅烧写在Flash中的速度跟我们方针的时候是完全不一样的，仿真的时候可以实现的功能可能一烧写进FLASH中就没有了效果，这就需要我们把FLASH中的程序复制到SRAM中运行。&lt;!--more--&gt;在flash中和SRAM之所以不一样，是因为FLSAH的速度实在是有限，一旦遇到一些高速信号，例如高频的PWM波就没辙了，只有把程序复制到SRAM中才能和仿真的时候一样。如果如何烧写不清楚，可以参考上一篇博客&lt;img src=&quot;https://renyoulu.com/blog/2018/10/30/DSP_Flash%E7%83%A7%E5%86%99%E6%AD%A5%E9%AA%A4.html&quot; alt=&quot;DSP烧写进FLASH&quot; /&gt;&lt;/p&gt;
 
@@ -16,14 +97,16 @@
 &lt;h3 id=&quot;1程序启动的过程一般为&quot;&gt;1.程序启动的过程一般为：&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-mermaid&quot;&gt;graph TD;
-    code_start--&amp;gt;wd_disable;
-    wd_disable--&amp;gt;c_int00-;
-    c_int00---&amp;gt;mian（）;
+    A--&amp;gt;B;
+    A--&amp;gt;C;
+    B--&amp;gt;D;
+    C--&amp;gt;D;
+
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;为了完成程序的拷贝，需要在C语言初始化之前插入一个程序拷贝的环节，修改之后的流程为：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-mermaid&quot;&gt;graph TD;
+&lt;pre&gt;&lt;code class=&quot;language-mermaid&quot;&gt;    graph TD;
     code_start--&amp;gt;wd_disable;
     wd_disable--&amp;gt;copy_sections;
     copy_sections---&amp;gt;c_int00-;

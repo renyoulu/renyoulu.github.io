@@ -291,7 +291,62 @@
 </header>
 <div class="m-page-main"><div class="m-home">
   <div class="main">
-    <div class="m-post-list"><article><h1><a href="/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html">DSP将flash中的程序复制到sram运行</a></h1>
+    <div class="m-post-list"><article><h1><a href="/blog/2019/07/09/ALLGRO%E7%94%9F%E6%88%90%E5%9D%90%E6%A0%87%E6%96%87%E4%BB%B6.html">Allgro生成坐标文件</a></h1>
+          <div class="m-article-content"><p>在使用Allgro的时候，经常需要PCB厂家帮你贴片，也就是PCBA服务，厂家会要求你给一个坐标文件的BOM表，那么怎么样的坐标文件才是规范的呢,本文给出一种比较合理的生成坐标文件的方法</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Designator</th>
+      <th style="text-align: left">Comment</th>
+      <th style="text-align: left">Footprint</th>
+      <th style="text-align: left">Mid X</th>
+      <th style="text-align: center">Mid Y</th>
+      <th style="text-align: right">Rotation</th>
+      <th style="text-align: right">Layer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>C1</td>
+      <td style="text-align: left">0.1uF</td>
+      <td style="text-align: left">CAP0603</td>
+      <td style="text-align: left">12.667</td>
+      <td style="text-align: center">24.888</td>
+      <td style="text-align: right">90</td>
+      <td style="text-align: right">B</td>
+    </tr>
+    <tr>
+      <td>R1</td>
+      <td style="text-align: left">1R</td>
+      <td style="text-align: left">RES0603</td>
+      <td style="text-align: left">100.667</td>
+      <td style="text-align: center">110.888</td>
+      <td style="text-align: right">180</td>
+      <td style="text-align: right">T</td>
+    </tr>
+    <tr>
+      <td>D1</td>
+      <td style="text-align: left">LED-Y</td>
+      <td style="text-align: left">0603D</td>
+      <td style="text-align: left">220.667</td>
+      <td style="text-align: center">89.888</td>
+      <td style="text-align: right">0</td>
+      <td style="text-align: right">B</td>
+    </tr>
+  </tbody>
+</table>
+
+</div><a href="/blog/2019/07/09/ALLGRO%E7%94%9F%E6%88%90%E5%9D%90%E6%A0%87%E6%96%87%E4%BB%B6.html">点我阅读更多...</a><div class="m-article-info clearfix"><meta itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Renyoulu"/></meta><ul class="tag-wrapper"><li>
+          <a class="pill-button" href="/all.html?tag=Allgro">Allgro</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1">硬件设计</a>
+        </li><li>
+          <a class="pill-button" href="/all.html?tag=PCB">PCB</a>
+        </li></ul><div class="other-wrapper"><div class="date-wrapper"><span class="article-meta">2019年 07月09日</span></div>
+  </div>
+</div>
+</article><article><h1><a href="/blog/2018/10/30/DSP_FLASH_COPY_TO_FLASH.html">DSP将flash中的程序复制到sram运行</a></h1>
           <div class="m-article-content"><p><img src="https://s1.ax1x.com/2018/10/30/i2LMWV.png" alt="" /></p>
 
 <p>在我们实际的项目当中，有时候仅仅烧写在Flash中的速度跟我们方针的时候是完全不一样的，仿真的时候可以实现的功能可能一烧写进FLASH中就没有了效果，这就需要我们把FLASH中的程序复制到SRAM中运行。</p>
@@ -438,5 +493,10 @@
     };
     window.TEXT_VARIABLES = TEXT_VARIABLES;
   })();
-</script><script></script></body>
+</script><script></script><script>
+  window.Lazyload.js('https://cdn.bootcss.com/mermaid/7.1.2/mermaid.min.js', function() {
+    mermaid.init(undefined, '.language-mermaid');
+    mermaid.initialize({ startOnLoad: true });
+  });
+</script></body>
 </html>

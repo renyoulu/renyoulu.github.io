@@ -29,15 +29,17 @@ category:  blog
 
 ```mermaid
 graph TD;
-    code_start-->wd_disable;
-    wd_disable-->c_int00-;
-    c_int00--->mian（）;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+
 ```
 
 为了完成程序的拷贝，需要在C语言初始化之前插入一个程序拷贝的环节，修改之后的流程为：
 
 ```mermaid
-graph TD;
+    graph TD;
     code_start-->wd_disable;
     wd_disable-->copy_sections;
     copy_sections--->c_int00-;
